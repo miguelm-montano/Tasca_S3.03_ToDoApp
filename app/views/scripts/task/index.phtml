@@ -1,0 +1,14 @@
+<h1>Dashboard de tareas</h1>
+
+<?php if (empty($this->tasks)) : ?>
+    <p>No tienes tareas todavía.</p>
+<?php else : ?>
+    <ul>
+        <?php foreach ($this->tasks as $task) : ?>
+            <li>
+                <?php echo htmlspecialchars($task['title']); ?>
+                (<?php echo $task['status']; ?>)
+            </li>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
