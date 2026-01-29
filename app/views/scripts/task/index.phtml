@@ -1,14 +1,22 @@
-<h1>Dashboard de tareas</h1>
+<h2>Dashboard de tareas</h2>
 
-<?php if (empty($this->tasks)) : ?>
-    <p>No tienes tareas todavía.</p>
-<?php else : ?>
+<form method="POST" action="/task/addTask">
+    <input type="text" name="title" placeholder="Nueva tarea" required>
+    <button type="submit">Agregar tarea</button>
+</form>
+
+<?php
+$tasks = $this->_data['tasks'] ?? [];
+?>
+
+<?php if (!empty($tasks)): ?>
     <ul>
-        <?php foreach ($this->tasks as $task) : ?>
+        <?php foreach ($tasks as $task): ?>
             <li>
-                <?php echo htmlspecialchars($task['title']); ?>
-                (<?php echo $task['status']; ?>)
+                <?php echo $task['title'] . ' (' . $task['status'] . ')'; ?>
             </li>
         <?php endforeach; ?>
     </ul>
+<?php else: ?>
+    <p>No tienes tareas todavía.</p>
 <?php endif; ?>

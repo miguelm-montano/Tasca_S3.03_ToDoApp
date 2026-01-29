@@ -17,7 +17,7 @@ class Task {
 
         $tasks = [];
         foreach($this->data['tasks'] as $task) {
-            if($task['userId'] === $userId) {
+            if($task['userId'] == $userId) {
                 $tasks[] = $task;
             }
         }
