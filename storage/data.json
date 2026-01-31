@@ -1,4 +1,38 @@
 {
-  "users": [],
-  "tasks": []
+    "users": [],
+    "tasks": [
+        {
+            "id": 1769703382,
+            "userId": 1,
+            "title": "Tarea de Prueba",
+            "status": "pending"
+        },
+        {
+            "id": 1769714567,
+            "userId": 1,
+            "title": "prueba",
+            "status": "pending"
+        },
+        {
+            "id": 1769714570,
+            "userId": 1,
+            "title": "prueba",
+            "status": "pending"
+        },
+        {
+            "id": 1769714581,
+            "userId": 1,
+            "title": "Terminar de entender todo",
+            "status": "pending"
+        },
+        {
+            "id": 1769790072,
+            "userId": 1,
+            "title": "Probando Tareas en la vista",
+            "description": "Probando el HTML",
+            "created_at": "2026-01-30",
+            "due_date": "",
+            "status": "pending"
+        }
+    ]
 }
