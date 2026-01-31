@@ -1,0 +1,59 @@
+<h2>New task</h2>
+
+<form method="POST" action="/task/add">
+
+    <!-- Title -->
+    <div class="form-group">
+        <label for="title">Title *</label>
+        <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            placeholder="Task title"
+        >
+    </div>
+
+    <!-- Description -->
+    <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+            id="description"
+            name="description"
+            placeholder="Optional description"
+        ></textarea>
+    </div>
+
+    <!-- Creation date -->
+    <div class="form-group">
+        <label for="created_at">Creation date *</label>
+        <input
+            type="date"
+            id="created_at"
+            name="created_at"
+            required
+        >
+    </div>
+
+    <!-- Due date -->
+    <div class="form-group">
+        <label for="due_date">End date</label>
+        <input
+            type="date"
+            id="due_date"
+            name="due_date"
+        >
+    </div>
+
+    <!-- Actions -->
+    <div class="form-actions">
+        <button type="submit">
+            Save task
+        </button>
+
+        <a href="/task">
+            Go back
+        </a>
+    </div>
+
+</form>

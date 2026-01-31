@@ -25,16 +25,21 @@ class Task {
         return $tasks;
     }
 
-    public function addTask($userId, $title): array {
+    public function addTask($userId, $title, ?string $description, ?string $createdAt, ?string $dueDate): array {
 
         $newTask = [
             'id' => time(),
             'userId' => $userId,
             'title' => $title,
+            'description' => $description,
+            'created_at' => $createdAt,
+            'due_date' => $dueDate,
             'status' => 'pending'
         ];
+
         $this->data['tasks'][] = $newTask;
         $this->storage->setData($this->data);
+        
         return $newTask;
     }
 
