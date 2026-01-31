@@ -89,9 +89,12 @@ $username = $this->username ?? 'Usuario';
                                 <a href="/task/update?id=<?php echo $task['id']; ?>&status=completed" title="Completed">
                                     ✅
                                 </a>
-                                <a href="/task/delete?id=<?php echo $task['id']; ?>" title="Delete">
+                                <form action="/task/delete" method="POST" style="display:inline;">
+                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                                <button type="submit" title="Delete" onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
                                     🗑
-                                </a>
+                                    </button>
+                                </form>
                             </div>
                         </li>
                     <?php endforeach; ?>
