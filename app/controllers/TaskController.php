@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/../models/Task.php';
+
 class TaskController extends ApplicationController {
 
     public function indexAction() {
@@ -34,6 +36,16 @@ class TaskController extends ApplicationController {
 
     public function deleteTaskAction() {
 
+        $userId = 1; //Temporal
+        $taskId = $_POST['task_id'] ?? null;
+
+        if($taskId) {
+            $taskModel = new Task();
+            $taskModel->deleteTask($userId, $taskId);
+        }
+
+        header('Location: /task');
+        exit;
     }
     
     public function updateTask() {
