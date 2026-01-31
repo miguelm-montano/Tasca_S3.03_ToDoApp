@@ -1,0 +1,105 @@
+<?php
+$tasks = $this->tasks ?? [];
+
+$pending = 0;
+$inProgress = 0;
+$completed = 0;
+
+foreach ($tasks as $task) {
+    switch ($task['status']) {
+        case 'pending':
+            $pending++;
+            break;
+        case 'in_progress':
+            $inProgress++;
+            break;
+        case 'completed':
+            $completed++;
+            break;
+    }
+}
+
+$total = count($tasks);
+
+// temporal hasta que exista sesión real
+$username = $this->username ?? 'Usuario';
+?>
+
+<div class="dashboard-container">
+    <div class="dashboard-card">
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-user">
+                Hi! <?php echo htmlspecialchars($username); ?>
+            </div>
+
+            <div class="dashboard-logout">
+                <a href="/user/logout">Logout</a>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h2 class="dashboard-title">Your tasks</h2>
+
+        <!-- Stats -->
+        <div class="dashboard-stats">
+            <div class="stat-box">
+                <p>Total</p>
+                <strong><?php echo $total; ?></strong>
+            </div>
+
+            <div class="stat-box">
+                <p>Pending</p>
+                <strong><?php echo $pending; ?></strong>
+            </div>
+
+            <div class="stat-box">
+                <p>On process</p>
+                <strong><?php echo $inProgress; ?></strong>
+            </div>
+
+            <div class="stat-box">
+                <p>Completed</p>
+                <strong><?php echo $completed; ?></strong>
+            </div>
+        </div>
+
+        <!-- Add task -->
+        <div class="dashboard-add-task">
+            <a href="/task/new" class="btn-add-task">
+                ➕ Add task
+            </a>
+        </div>
+
+        <!-- Task list -->
+        <div class="dashboard-task-list">
+            <?php if (!empty($tasks)): ?>
+                <ul>
+                    <?php foreach ($tasks as $task): ?>
+                        <li class="task-item">
+                            <span class="task-title">
+                                <?php echo htmlspecialchars($task['title']); ?>
+                            </span>
+
+                            <div class="task-actions">
+                                <a href="/task/update?id=<?php echo $task['id']; ?>&status=in_progress" title="On process">
+                                    🔄
+                                </a>
+                                <a href="/task/update?id=<?php echo $task['id']; ?>&status=completed" title="Completed">
+                                    ✅
+                                </a>
+                                <a href="/task/delete?id=<?php echo $task['id']; ?>" title="Delete">
+                                    🗑
+                                </a>
+                            </div>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>No tasks yet.</p>
+            <?php endif; ?>
+        </div>
+
+    </div>
+</div>
