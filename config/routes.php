@@ -10,14 +10,16 @@
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
-<<<<<<< HEAD
+	
 	'/test' => 'test#index',
 	'/task' => 'task#index',
 	'/task/new' => 'task#new',
 	'/task/add' => 'task#addTask',
 	'/task/delete' => 'task#deleteTask',
-	'/task/update' => 'task#updateTask'
-=======
+	'/task/update' => 'task#updateTask',
+	'/task/edit' => 'task#editTask',
+	'/task/update-content' => 'task#updateTaskContent',
+
 	'/' => 'auth#login',                 // Login page
 	'/dashboard' => 'dashboard#index',   // Dashboard personal
 	'/auth/logout' => 'auth#logout',     // Logout
@@ -27,6 +29,5 @@ $routes = array(
 	'/users/edit' => 'user#edit',        // ← SIN slash (para match con vistas)
 	'/users/edit/' => 'user#edit',       // ← CON slash (por si acaso)
 	'/users/delete' => 'user#delete',    // ← SIN slash (para match con vistas)
-	'/users/delete/' => 'user#delete'    // ← CON slash (por si acaso)
->>>>>>> feature/new-user
+	'/users/delete/' => 'user#delete',    // ← CON slash (por si acaso)
 );

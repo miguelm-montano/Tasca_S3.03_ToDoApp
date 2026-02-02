@@ -90,6 +90,8 @@ $username = $this->username ?? 'Usuario';
                                     </button>
                                 </form>
 
+                                <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit">✏️</a>
+
 
                                 <form action="/task/update" method="POST" style="display:inline;">
                                 <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">

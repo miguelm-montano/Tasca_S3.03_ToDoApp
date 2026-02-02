@@ -63,5 +63,50 @@ class TaskController extends ApplicationController {
         exit;
     }
 
+    public function editTaskAction() {
+
+        $userId = 1; // temporal, luego sesión
+        $taskId = $_GET['id'] ?? null;
+
+        if (!$taskId) {
+            header('Location: /task');
+            exit;
+        }
+
+        $taskModel = new Task();
+        $task = $taskModel->getTaskById($userId, $taskId);
+
+        if (!$task) {
+            header('Location: /task');
+            exit;
+        }
+
+        $this->view->task = $task;
+    }
+
+    public function updateTaskContentAction() {
+
+        $userId = 1;
+        $taskId = $_POST['task_id'] ?? null;
+        $title = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $dueDate = $_POST['due_date'] ?? null;
+
+    if ($taskId && $title) {
+
+            $taskModel = new Task();
+            $taskModel->updateTaskContent(
+            $userId,
+            $taskId,
+            $title,
+            $description ?: null,
+            $dueDate);
+        }
+
+        header('Location: /task');
+        exit;
+}
+
+
 }
 ?>
