@@ -48,8 +48,19 @@ class TaskController extends ApplicationController {
         exit;
     }
     
-    public function updateTask() {
+    public function updateTaskAction() {
 
+        $userId = 1; //Temporal
+        $taskId = $_POST['task_id'] ?? null;
+        $status = $_POST['status'] ?? null;
+
+        if ($taskId && $status) {
+        $taskModel = new Task();
+        $taskModel->updateTask($userId, $taskId, $status);
+    }
+
+        header('Location: /task');
+        exit;
     }
 
 }
