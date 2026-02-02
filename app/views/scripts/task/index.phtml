@@ -82,13 +82,23 @@ $username = $this->username ?? 'Usuario';
                                 <?php echo htmlspecialchars($task['title']); ?>
                             </span>
 
-                            <div class="task-actions">
-                                <a href="/task/update?id=<?php echo $task['id']; ?>&status=in_progress" title="On process">
-                                    🔄
-                                </a>
-                                <a href="/task/update?id=<?php echo $task['id']; ?>&status=completed" title="Completed">
-                                    ✅
-                                </a>
+                                <form action="/task/update" method="POST" style="display:inline;">
+                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                                <input type="hidden" name="status" value="in_progress">
+                                <button type="submit" title="On process">
+                                 🔄
+                                    </button>
+                                </form>
+
+
+                                <form action="/task/update" method="POST" style="display:inline;">
+                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                                <input type="hidden" name="status" value="completed">
+                                <button type="submit" title="Completed">
+                                 ✅
+                                    </button>
+                                </form>
+
                                 <form action="/task/delete" method="POST" style="display:inline;">
                                 <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
                                 <button type="submit" title="Delete" onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
