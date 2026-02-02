@@ -1,0 +1,53 @@
+<?php
+$user = $this->currentUser ?? null;
+?>
+<div class="dashboard-container">
+    <div class="dashboard-card">
+
+        <!-- Header con logout -->
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                Welcome, <?php echo htmlspecialchars($user['name'] ?? 'User'); ?>
+            </div>
+            <div class="dashboard-logout">
+                <a href="<?php echo WEB_ROOT; ?>/auth/logout" class="btn-logout">
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        <!-- User Info Card -->
+        <div class="user-profile-card">
+            <h3>Your Profile</h3>
+            <div class="profile-info">
+                <div class="profile-item">
+                    <strong>Full Name:</strong>
+                    <?php echo htmlspecialchars(($user['name'] ?? '') . ' ' . ($user['surname'] ?? '')); ?>
+                </div>
+                <div class="profile-item">
+                    <strong>Username:</strong>
+                    @<?php echo htmlspecialchars($user['username'] ?? ''); ?>
+                </div>
+                <div class="profile-item">
+                    <strong>Email:</strong>
+                    <?php echo htmlspecialchars($user['email'] ?? ''); ?>
+                </div>
+                <div class="profile-item">
+                    <strong>Member Since:</strong>
+                    <?php echo htmlspecialchars($user['created_at'] ?? 'N/A'); ?>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="dashboard-actions">
+            <a href="<?php echo WEB_ROOT; ?>/users" class="btn-view-users">
+                👥 View All Users
+            </a>
+            <a href="<?php echo WEB_ROOT; ?>/users/add" class="btn-add-user">
+                ➕ Add New User
+            </a>
+        </div>
+
+    </div>
+</div>
