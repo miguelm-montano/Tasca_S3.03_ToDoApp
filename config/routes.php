@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Used to define the routes in the system.
@@ -10,10 +10,23 @@
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
+<<<<<<< HEAD
 	'/test' => 'test#index',
 	'/task' => 'task#index',
 	'/task/new' => 'task#new',
 	'/task/add' => 'task#addTask',
 	'/task/delete' => 'task#deleteTask',
 	'/task/update' => 'task#updateTask'
+=======
+	'/' => 'auth#login',                 // Login page
+	'/dashboard' => 'dashboard#index',   // Dashboard personal
+	'/auth/logout' => 'auth#logout',     // Logout
+	'/users' => 'user#index',            // Vista de todos los usuarios
+	'/users/add' => 'user#add',          // ← SIN slash (para match con vistas)
+	'/users/add/' => 'user#add',         // ← CON slash (por si acaso)
+	'/users/edit' => 'user#edit',        // ← SIN slash (para match con vistas)
+	'/users/edit/' => 'user#edit',       // ← CON slash (por si acaso)
+	'/users/delete' => 'user#delete',    // ← SIN slash (para match con vistas)
+	'/users/delete/' => 'user#delete'    // ← CON slash (por si acaso)
+>>>>>>> feature/new-user
 );
