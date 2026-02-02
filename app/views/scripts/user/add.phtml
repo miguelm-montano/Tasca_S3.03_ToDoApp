@@ -1,0 +1,47 @@
+<div class="users-container">
+    <div class="users-card">
+
+        <!-- Header -->
+        <div class="users-header">
+            <div class="users-title">
+                Add New User
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <div class="users-form">
+            <form action="<?php echo WEB_ROOT; ?>/users/add" method="POST">
+
+                <!-- Campo Nombre -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <!-- Campo Apellido -->
+                <div class="form-group">
+                    <label for="surname">Surname:</label>
+                    <input type="text" id="surname" name="surname" required>
+                </div>
+                <!-- Campo Usuario -->
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <!-- Campo Email -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <!-- Botones -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Save User</button>
+                    <a href="<?php echo WEB_ROOT; ?>/users" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
