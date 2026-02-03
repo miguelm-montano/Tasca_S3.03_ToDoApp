@@ -89,4 +89,11 @@ class User
         }
         return null;
     }
+
+    public function deleteAllUsers(): bool
+    {
+        $this->data['users'] = [];
+        $this->storage->setData($this->data);
+        return true;
+    }
 }

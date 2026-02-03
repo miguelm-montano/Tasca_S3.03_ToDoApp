@@ -1,26 +1,37 @@
 <div class="login-container">
     <div class="login-card">
+
         <h2>Enter Your Data</h2>
+
         <p class="login-subtitle">New users will be created automatically</p>
 
         <form action="<?php echo WEB_ROOT; ?>/" method="POST">
+            
             <div class="form-group">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required placeholder="Enter your name">
             </div>
+
             <div class="form-group">
                 <label for="surname">Surname:</label>
                 <input type="text" id="surname" name="surname" required placeholder="Enter your surname">
             </div>
+
             <div class="form-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required placeholder="Choose a username">
             </div>
+
             <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required placeholder="Enter your email">
             </div>
-            <button type="submit" class="btn-login">Continue to Dashboard</button>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn-login">Continue to Dashboard</button>
+                <a href="<?php echo WEB_ROOT; ?>/users" class="btn-secondary">View Registered Users</a>
+            </div>
+
         </form>
     </div>
 </div>

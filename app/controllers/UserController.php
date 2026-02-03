@@ -9,14 +9,16 @@ class UserController extends ApplicationController
             session_start();
         }
 
-        if (!isset($_SESSION['logged_in'])) {
-            header('Location: ' . WEB_ROOT . '/');
-            exit;
-        }
-
         $userModel = new User();
         $this->view->users = $userModel->getAllUsers();
-        $this->view->currentUser = $_SESSION['user'];
+
+        if (isset($_SESSION['logged_in'])) {
+            $this->view->currentUser = $_SESSION['user'];
+            $this->view->canEdit = true;
+        } else {
+            $this->view->currentUser = null;
+            $this->view->canEdit = false;
+        }
     }
 
     public function addAction()
@@ -39,14 +41,23 @@ class UserController extends ApplicationController
 
     public function deleteAction()
     {
- 
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
         $userId = $_GET['id'] ?? 0;
+        $currentUser = $_SESSION['user'] ?? null;
+        $isSelfDelete = $currentUser && ($userId == $currentUser['id']);
 
         $userModel = new User();
         $userModel->deleteUser($userId);
 
-
-        header('Location: ' . WEB_ROOT . '/dashboard');
+        if ($isSelfDelete) {
+            session_destroy();
+            header('Location: ' . WEB_ROOT . '/');
+        } else {
+            header('Location: ' . WEB_ROOT . '/dashboard');
+        }
         exit;
     }
 
@@ -70,5 +81,20 @@ class UserController extends ApplicationController
         }
         $userModel = new User();
         $this->view->user = $userModel->getUserById($userId);
+    }
+
+    public function deleteAllAction()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $userModel = new User();
+        $userModel->deleteAllUsers();
+
+        session_destroy();
+
+        header('Location: ' . WEB_ROOT . '/');
+        exit;
     }
 }

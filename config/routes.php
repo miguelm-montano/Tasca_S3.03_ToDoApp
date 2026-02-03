@@ -10,24 +10,30 @@
  * '/calendar' => 'calendar#index'
  */
 $routes = array(
-	
+
+	// test
 	'/test' => 'test#index',
+
+	// auth
+	'/' => 'auth#login',
+	'/auth/logout' => 'auth#logout',
+
+	// dashboard
+	'/dashboard' => 'dashboard#index',
+
+	// tasks
 	'/task' => 'task#index',
 	'/task/new' => 'task#new',
 	'/task/add' => 'task#addTask',
-	'/task/delete' => 'task#deleteTask',
-	'/task/update' => 'task#updateTask',
 	'/task/edit' => 'task#editTask',
+	'/task/update' => 'task#updateTask',
 	'/task/update-content' => 'task#updateTaskContent',
+	'/task/delete' => 'task#deleteTask',
 
-	'/' => 'auth#login',                 // Login page
-	'/dashboard' => 'dashboard#index',   // Dashboard personal
-	'/auth/logout' => 'auth#logout',     // Logout
-	'/users' => 'user#index',            // Vista de todos los usuarios
-	'/users/add' => 'user#add',          // ← SIN slash (para match con vistas)
-	'/users/add/' => 'user#add',         // ← CON slash (por si acaso)
-	'/users/edit' => 'user#edit',        // ← SIN slash (para match con vistas)
-	'/users/edit/' => 'user#edit',       // ← CON slash (por si acaso)
-	'/users/delete' => 'user#delete',    // ← SIN slash (para match con vistas)
-	'/users/delete/' => 'user#delete',    // ← CON slash (por si acaso)
+	// users
+	'/users' => 'user#index',
+	'/users/add' => 'user#add',
+	'/users/edit' => 'user#edit',
+	'/users/delete' => 'user#delete',
+	'/users/delete-all' => 'user#deleteAll',
 );
