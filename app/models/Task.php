@@ -67,6 +67,30 @@ class Task {
         return false;
     }
 
+    public function getTaskById($userId, $taskId) {
+
+        foreach ($this->data['tasks'] as $task) {
+            if ($task['userId'] == $userId && $task['id'] == $taskId) {
+                return $task;
+        }
+    }
+        return null;
+    }
+
+    public function updateTaskContent($userId, $taskId, $title, $description, $dueDate) {
+    
+        foreach ($this->data['tasks'] as $index => $task) {
+            if ($task['userId'] == $userId && $task['id'] == $taskId) {
+                $this->data['tasks'][$index]['title'] = $title;
+                $this->data['tasks'][$index]['description'] = $description;
+                $this->data['tasks'][$index]['due_date'] = $dueDate;
+                $this->storage->setData($this->data);
+                return true;
+        }
+    }
+    
+    return false;
+}
 
 }
 ?>
