@@ -1,19 +1,26 @@
 <?php
 
-class UserController extends ApplicationController
-{
+require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/helpers/SessionHelper.php';
 
-    public function indexAction()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+class UserController extends ApplicationController {
+
+    private $sessionHelper;
+
+    public function __construct() {
+
+        $this->sessionHelper = new SessionHelper();
+    }
+
+    public function indexAction() {
+
+        $this->sessionHelper->startSession();
 
         $userModel = new User();
         $this->view->users = $userModel->getAllUsers();
 
-        if (isset($_SESSION['logged_in'])) {
-            $this->view->currentUser = $_SESSION['user'];
+        if ($this->sessionHelper->isLoggedIn()) {
+            $this->view->currentUser = $this->sessionHelper->getCurrentUser();
             $this->view->canEdit = true;
         } else {
             $this->view->currentUser = null;
@@ -41,9 +48,7 @@ class UserController extends ApplicationController
 
     public function deleteAction()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        $this->sessionHelper->startSession();
 
         $userId = $_GET['id'] ?? 0;
         $currentUser = $_SESSION['user'] ?? null;
@@ -53,7 +58,7 @@ class UserController extends ApplicationController
         $userModel->deleteUser($userId);
 
         if ($isSelfDelete) {
-            session_destroy();
+            $this->sessionHelper->destroySession();
             header('Location: ' . WEB_ROOT . '/');
         } else {
             header('Location: ' . WEB_ROOT . '/dashboard');
@@ -85,14 +90,12 @@ class UserController extends ApplicationController
 
     public function deleteAllAction()
     {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
-        }
+        $this->sessionHelper->startSession();
 
         $userModel = new User();
         $userModel->deleteAllUsers();
 
-        session_destroy();
+        $this->sessionHelper->destroySession();
 
         header('Location: ' . WEB_ROOT . '/');
         exit;

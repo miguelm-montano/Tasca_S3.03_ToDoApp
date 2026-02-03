@@ -1,25 +1,39 @@
 <?php
 
 require_once __DIR__ . '/../models/Task.php';
+require_once __DIR__ . '/helpers/SessionHelper.php';
 
 class TaskController extends ApplicationController {
 
+    private $sessionHelper;
+
+    public function __construct() {
+
+        $this->sessionHelper = new SessionHelper();
+    }
+
     public function indexAction() {
 
-        $userId = 1; //Temporal para probar
+        $this->sessionHelper->requireLogin();
+
+        $userId = $this->sessionHelper->getCurrentUserId();
 
         $taskModel = new Task();
         $this->view->tasks = $taskModel->getAllTasks($userId);
 
+        $this->view->currentUser=$this->sessionHelper->getCurrentUser();
     }
 
     public function newAction() {
-        //Para renderizar la vista
+        $this->sessionHelper->requireLogin();
+        //Para render de la vista
     }
 
     public function addTaskAction() {
 
-        $userId = 1; //Prueba luego sera la sesión
+        $this->sessionHelper->requireLogin();
+        $userId = $this->sessionHelper->getCurrentUserId();
+
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $createdAt = $_POST['created_at'] ?? null;
@@ -30,13 +44,15 @@ class TaskController extends ApplicationController {
             $taskModel->addTask($userId, $title, $description ?: null, $createdAt, $dueDate);
         }
 
-        header('Location: /task');
+        header('Location:' . WEB_ROOT . '/task');
         exit;
     }
 
     public function deleteTaskAction() {
 
-        $userId = 1; //Temporal
+        $this->sessionHelper->requireLogin();
+        $userId = $this->sessionHelper->getCurrentUserId();
+        
         $taskId = $_POST['task_id'] ?? null;
 
         if($taskId) {
@@ -44,13 +60,15 @@ class TaskController extends ApplicationController {
             $taskModel->deleteTask($userId, $taskId);
         }
 
-        header('Location: /task');
+        header('Location:' . WEB_ROOT . '/task');
         exit;
     }
     
     public function updateTaskAction() {
 
-        $userId = 1; //Temporal
+        $this->sessionHelper->requireLogin();
+        $userId = $this->sessionHelper->getCurrentUserId();
+
         $taskId = $_POST['task_id'] ?? null;
         $status = $_POST['status'] ?? null;
 
@@ -59,17 +77,19 @@ class TaskController extends ApplicationController {
         $taskModel->updateTask($userId, $taskId, $status);
     }
 
-        header('Location: /task');
+        header('Location:' . WEB_ROOT . '/task');
         exit;
     }
 
     public function editTaskAction() {
 
-        $userId = 1; // temporal, luego sesión
+        $this->sessionHelper->requireLogin();
+        $userId = $this->sessionHelper->getCurrentUserId();
+
         $taskId = $_GET['id'] ?? null;
 
         if (!$taskId) {
-            header('Location: /task');
+            header('Location:' . WEB_ROOT . '/task');
             exit;
         }
 
@@ -77,7 +97,7 @@ class TaskController extends ApplicationController {
         $task = $taskModel->getTaskById($userId, $taskId);
 
         if (!$task) {
-            header('Location: /task');
+            header('Location:' . WEB_ROOT . '/task');
             exit;
         }
 
@@ -86,7 +106,9 @@ class TaskController extends ApplicationController {
 
     public function updateTaskContentAction() {
 
-        $userId = 1;
+        $this->sessionHelper->requireLogin();
+        $userId = $this->sessionHelper->getCurrentUserId();
+
         $taskId = $_POST['task_id'] ?? null;
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
@@ -103,7 +125,7 @@ class TaskController extends ApplicationController {
             $dueDate);
         }
 
-        header('Location: /task');
+        header('Location:' . WEB_ROOT . '/task');
         exit;
 }
 

@@ -22,7 +22,7 @@ foreach ($tasks as $task) {
 $total = count($tasks);
 
 // temporal hasta que exista sesión real
-$username = $this->username ?? 'Usuario';
+$username = $this->currentUser['username'] ?? 'Usuario';
 ?>
 
 <div class="dashboard-container">
@@ -35,7 +35,7 @@ $username = $this->username ?? 'Usuario';
             </div>
 
             <div class="dashboard-logout">
-                <a href="/user/logout">Logout</a>
+                <a href="<?php echo WEB_ROOT; ?>/">Logout</a>
             </div>
         </div>
 
