@@ -7,7 +7,7 @@ class TaskStorage {
 
     public function __construct() {
 
-        $this->filePath = ROOT_PATH . '/storage/data.json';
+        $this->filePath = ROOT_PATH . '/storage/storage.json';
         $this->loadData();
     }
 

@@ -7,7 +7,7 @@ class UserStorage
 
     public function __construct()
     {
-        $this->filePath = ROOT_PATH . '/storage/users.json';
+        $this->filePath = ROOT_PATH . '/storage/storage.json';
         $this->loadData();
     }
 
