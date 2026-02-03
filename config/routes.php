@@ -16,6 +16,7 @@ $routes = array(
 
 	// auth
 	'/' => 'auth#login',
+	'/auth/register' => 'auth#register',
 	'/auth/logout' => 'auth#logout',
 
 	// dashboard
@@ -32,6 +33,7 @@ $routes = array(
 
 	// users
 	'/users' => 'user#index',
+	'/users/login-as' => 'user#loginAs',
 	'/users/add' => 'user#add',
 	'/users/edit' => 'user#edit',
 	'/users/delete' => 'user#delete',
