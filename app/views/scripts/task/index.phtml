@@ -22,7 +22,7 @@ foreach ($tasks as $task) {
 $total = count($tasks);
 
 // temporal hasta que exista sesión real
-$username = $this->username ?? 'Usuario';
+$username = $this->currentUser['username'] ?? 'Usuario';
 ?>
 
 <div class="dashboard-container">
