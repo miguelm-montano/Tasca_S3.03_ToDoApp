@@ -51,7 +51,7 @@ class SessionHelper {
 
     public function requireLogin($redirectUrl = '/') {
 
-        if($this->isLoggedIn()) {
+        if(!$this->isLoggedIn()) {
             header('Location:' . WEB_ROOT . $redirectUrl);
             exit;
         }

@@ -1,15 +1,14 @@
 <?php
 
 require_once __DIR__ . '/../models/Task.php';
-require_once __DIR__ . 'helpers/SessionHelper.php';
+require_once __DIR__ . '/helpers/SessionHelper.php';
 
 class TaskController extends ApplicationController {
 
     private $sessionHelper;
 
     public function __construct() {
-        
-        parent::__construct();
+
         $this->sessionHelper = new SessionHelper();
     }
 
@@ -17,7 +16,7 @@ class TaskController extends ApplicationController {
 
         $this->sessionHelper->requireLogin();
 
-        $userId = $this->sessionHelper->getCurrentUser();
+        $userId = $this->sessionHelper->getCurrentUserId();
 
         $taskModel = new Task();
         $this->view->tasks = $taskModel->getAllTasks($userId);
@@ -33,7 +32,7 @@ class TaskController extends ApplicationController {
     public function addTaskAction() {
 
         $this->sessionHelper->requireLogin();
-        $userId = $this->sessionHelper->getCurrentUser();
+        $userId = $this->sessionHelper->getCurrentUserId();
 
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
