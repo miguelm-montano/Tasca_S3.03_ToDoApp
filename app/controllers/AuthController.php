@@ -1,46 +1,63 @@
 <?php
 
-class AuthController extends ApplicationController
-{
+require_once __DIR__ . 'helpers/SessionHelper.php';
 
-    public function loginAction()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
+class AuthController extends ApplicationController {
 
-            $name = $_POST['name'] ?? '';
-            $surname = $_POST['surname'] ?? '';
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
+    private $sessionHelper;
 
-            $userModel = new User();
-            $user = $userModel->findUserByCredentials($name, $surname, $username, $email);
+    public function __construct() {
+        
+        parent::__construct();
+        $this->sessionHelper = new SessionHelper();
+    }
 
-            if ($user) {
-                $_SESSION['logged_in'] = true;
-                $_SESSION['user'] = $user;
-            } else {
-                $newUser = $userModel->addUser($name, $surname, $username, $email);
-                $_SESSION['logged_in'] = true;
-                $_SESSION['user'] = $newUser;
-            }
+    public function loginAction() {
 
-            header('Location: ' . WEB_ROOT . '/dashboard');
+        if($this->sessionHelper->isLoggedIn()) {
+            header('Location:' . WEB_ROOT . '/task');
             exit;
         }
     }
 
-    public function logoutAction()
-    {
-        if (session_status() == PHP_SESSION_NONE) {
-            session_start();
+    public function registerAction() {
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = trim($_POST['name'] ?? '');
+            $surname = trim($_POST['surname'] ?? '');
+            $username = trim($_POST['username'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+
+        // Validar que todos los campos estén completos
+        if (empty($name) || empty($surname) || empty($username) || empty($email)) {
+            header('Location: ' . WEB_ROOT . '/?error=empty_fields');
+            exit;
         }
 
-        session_destroy();
-
+        $userModel = new User();
+        // Intentar encontrar el usuario
+        $user = $userModel->findUserByCredentials($name, $surname, $username, $email);
+        if ($user) {
+        // Usuario ya existe - iniciar sesión con ese usuario
+            $this->sessionHelper->setUser($user);
+        } else {
+        // Usuario NO existe - crear nuevo y iniciar sesión
+            $newUser = $userModel->addUser($name, $surname, $username, $email);
+            $this->sessionHelper->setUser($newUser);
+        }
+        // Redirigir a SUS tareas
+        header('Location: ' . WEB_ROOT . '/task');
+        exit;
+    }
+        // Si no es POST, redirigir al inicio
         header('Location: ' . WEB_ROOT . '/');
         exit;
+    }
+
+    public function logoutAction() {
+
+        $this->sessionHelper->destroySession();
+        header('Location: ' . WEB_ROOT . '/');
+        exit;   
     }
 }
