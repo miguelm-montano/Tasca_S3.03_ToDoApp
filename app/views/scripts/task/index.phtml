@@ -31,9 +31,9 @@ $username = $this->currentUser['username'] ?? 'Usuario';
     <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[8px_8px_0_0_#000] p-8">
 
         <!-- Header -->
-        <div class="dashboard-header">
-            <div class="font-['Holtwood_One_SC',_serif]">
-                Hi! <br><?php echo htmlspecialchars($username); ?></br>
+        <div class="flex items-center justify-between">
+            <div class="font-['Holtwood_One_SC',_serif] text-xl">
+                Hi. <br><?php echo htmlspecialchars($username); ?>.</br>
             </div>
 
             <div class="font-['Baloo_2',_serif]">
@@ -42,34 +42,35 @@ $username = $this->currentUser['username'] ?? 'Usuario';
         </div>
 
         <!-- Title -->
-        <h2 class="font-['Baloo_2',_serif]">Your tasks</h2>
+        <h2 class="font-['Baloo_2',_serif] mt-4">Your tasks</h2>
 
         <!-- Stats -->
-        <div class="dashboard-stats">
-            <div class="stat-box">
-                <p>Total</p>
-                <strong><?php echo $total; ?></strong>
+        <div class="grid grid-cols-2 gap-4 flex items-center justify-center mt-2">
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Total</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $total; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>Pending</p>
-                <strong><?php echo $pending; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Pending</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $pending; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>On process</p>
-                <strong><?php echo $inProgress; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">On process</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $inProgress; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>Completed</p>
-                <strong><?php echo $completed; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Completed</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $completed; ?></p>
             </div>
         </div>
 
         <!-- Add task -->
-        <div class="font-['Holtwood_One_SC',_serif]">
-            <a href="/task/new" class="btn-add-task">
+        <div class="mt-4">
+            <a href="/task/new" class="block text-center bg-neutral-950 text-white font-['Holtwood_One_SC',_serif]
+            px-5 py-2.5 rounded-xl hover:bg-neutral-500 transition">
                 Add task
             </a>
         </div>
