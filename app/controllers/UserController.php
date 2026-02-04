@@ -3,11 +3,12 @@
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/helpers/SessionHelper.php';
 
-class UserController extends ApplicationController {
-
+class UserController extends ApplicationController 
+{
     private $sessionHelper;
 
-    public function __construct() {
+    public function __construct() 
+    {
 
         $this->sessionHelper = new SessionHelper();
     }
@@ -98,6 +99,27 @@ class UserController extends ApplicationController {
         $this->sessionHelper->destroySession();
 
         header('Location: ' . WEB_ROOT . '/');
+        exit;
+    }
+
+    public function loginAsAction()
+    {
+        $this->sessionHelper->startSession();
+
+        $userId = $_GET['id'] ?? 0;
+
+        if ($userId > 0) {
+            $userModel = new User();
+            $user = $userModel->getUserById($userId);
+
+            if ($user) {
+                $this->sessionHelper->setUser($user);
+                header('Location: ' . WEB_ROOT . '/task');
+            }
+            exit;
+        }
+
+        header('Location: ' . WEB_ROOT . '/users');
         exit;
     }
 }
