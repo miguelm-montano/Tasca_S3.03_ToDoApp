@@ -27,22 +27,22 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
 <body class="bg-gray-200">
 
-<div class="bg-gray-50">
-    <div class="dashboard-card">
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[8px_8px_0_0_#000] p-8">
 
         <!-- Header -->
         <div class="dashboard-header">
-            <div class="dashboard-user">
-                Hi! <?php echo htmlspecialchars($username); ?>
+            <div class="font-['Holtwood_One_SC',_serif]">
+                Hi! <br><?php echo htmlspecialchars($username); ?></br>
             </div>
 
-            <div class="dashboard-logout">
+            <div class="font-['Baloo_2',_serif]">
                 <a href="<?php echo WEB_ROOT; ?>/auth/logout">Logout</a>
             </div>
         </div>
 
         <!-- Title -->
-        <h2 class="dashboard-title">Your tasks</h2>
+        <h2 class="font-['Baloo_2',_serif]">Your tasks</h2>
 
         <!-- Stats -->
         <div class="dashboard-stats">
@@ -68,9 +68,9 @@ $username = $this->currentUser['username'] ?? 'Usuario';
         </div>
 
         <!-- Add task -->
-        <div class="dashboard-add-task">
+        <div class="font-['Holtwood_One_SC',_serif]">
             <a href="/task/new" class="btn-add-task">
-                ➕ Add task
+                Add task
             </a>
         </div>
 
@@ -114,7 +114,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p>No tasks yet.</p>
+                <p class="font-['Baloo_2',_serif]">No tasks yet</p>
             <?php endif; ?>
         </div>
 
