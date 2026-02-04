@@ -2,7 +2,8 @@
 
 require_once __DIR__ . '/helpers/SessionHelper.php';
 
-class AuthController extends ApplicationController {
+class AuthController extends ApplicationController 
+{
 
     private $sessionHelper;
 

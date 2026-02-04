@@ -9,14 +9,17 @@ $currentUser = $this->currentUser ?? null;
 
         <!-- Header -->
         <div class="users-header">
+
             <div class="users-title">
-                All Registered Users <!-- (<?php echo $total; ?>) --> 
+                All Registered Users <!-- (<?php echo $total; ?>) -->
             </div>
+
             <div class="users-back">
                 <a href="<?php echo WEB_ROOT; ?>/dashboard" class="btn-back">
-                    ← Back to Dashboard
+                    ← Back
                 </a>
             </div>
+
         </div>
 
         <!-- Users list -->
@@ -25,6 +28,7 @@ $currentUser = $this->currentUser ?? null;
                 <div class="users-grid">
                     <?php foreach ($users as $user): ?>
                         <div class="user-card <?php echo ($currentUser && $user['id'] == $currentUser['id']) ? 'current-user' : ''; ?>">
+                            
                             <div class="user-info">
                                 <div class="user-avatar">
                                     <?php if ($currentUser && $user['id'] == $currentUser['id']): ?>
@@ -55,32 +59,34 @@ $currentUser = $this->currentUser ?? null;
                             </div>
 
                             <div class="user-actions">
+
                                 <?php if ($this->canEdit): ?>
-                                    <a href="<?php echo WEB_ROOT; ?>/users/edit?id=<?php echo $user['id']; ?>"
-                                        class="btn-edit" title="Edit user">
-                                        Edit
-                                    </a>
-                                    <?php if ($user['id'] != $currentUser['id']): ?>
-                                        <a href="<?php echo WEB_ROOT; ?>/users/delete?id=<?php echo $user['id']; ?>"
-                                            class="btn-delete"
-                                            title="Delete user"
-                                            onclick="return confirm('Are you sure you want to delete this user?')">
-                                            Delete
-                                        </a>
-                                    <?php else: ?>
+                                    <?php if ($user['id'] == $currentUser['id']): ?>
+                                        <!-- Usuario actual -->
                                         <a href="<?php echo WEB_ROOT; ?>/users/delete?id=<?php echo $user['id']; ?>"
                                             class="btn-delete delete-self"
                                             title="Delete yourself - you will be logged out"
                                             onclick="return confirm('Are you sure you want to delete yourself? You will be logged out.')">
                                             Delete Yourself
                                         </a>
+                                        
+                                    <?php else: ?>
+                                        <!-- Otros usuarios cuando hay sesión -->
+                                        <a href="<?php echo WEB_ROOT; ?>/users/delete?id=<?php echo $user['id']; ?>"
+                                            class="btn-delete"
+                                            title="Delete user"
+                                            onclick="return confirm('Are you sure you want to delete this user?')">
+                                            Delete
+                                        </a>
                                     <?php endif; ?>
+                                
                                 <?php else: ?>
-                                    <span class="btn-disabled" title="Login required">
-                                        Login to edit
-                                    </span>
+                                    <!-- Sin sesión - solo mostrar botón de acceso a tareas -->
+                                    <a href="<?php echo WEB_ROOT; ?>/users/login-as?id=<?php echo $user['id']; ?>"
+                                        class="btn-login" title="Go to your tasks">
+                                        Go to your tasks
+                                    </a>
                                 <?php endif; ?>
-
                             </div>
                         </div>
                     <?php endforeach; ?>
