@@ -1,17 +1,32 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex items-center justify-end py-12 px-4 sm:px-6 lg:px-8" 
+     style="background-image: url('<?php echo WEB_ROOT; ?>../images/background_login.webp'); 
+            background-size: 100%;
+            background-position: -5% 75%; 
+            background-repeat: no-repeat;">
+            
+    <!-- Texto TO.DO LIST a la izquierda -->
+    <div class="absolute top-42 left-50">
+        <h1 class="text-7xl font-black uppercase tracking-tight font-['Holtwood_One_SC',_serif] leading-none mb-4">
+        To. Do<br>List
+        </h1>
+        <p class="text-lg text-gray-700 max-w-sm font-['Baloo_2',_sans-serif] leading-none mb-4">
+            A powerful task management<br>to organize your day
+        </p>
+    </div>
 
     <!-- Card contenedor del formulario -->
-    <div class="max-w-md w-full bg-gray-200 rounded-3xl p-8 border-0 border-black" style="box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);">
+    <div class="max-w-[420px] aspect-[9/14] w-full mr-64 bg-gray-200 rounded-3xl p-8 flex flex-col border-0 border-black" 
+     style="box-shadow: 8px 8px 0px 0px rgba(0, 0, 0, 1);">
 
         <!-- Título -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-black uppercase tracking-tight font-['Holtwood_One_SC',_serif]">
-                Create Your<br>Account
+        <div class="text-left mt-2 mb-4">
+            <h2 class="text-2xl mb-4 font-black uppercase tracking-tight font-['Holtwood_One_SC',_serif] leading-tight">
+            Create Your<br>Account
             </h2>
         </div>
 
         <!-- Formulario -->
-        <form action="<?php echo WEB_ROOT; ?>/" method="POST" class="space-y-4">
+        <form action="<?php echo WEB_ROOT; ?>/" method="POST" class="flex-grow flex flex-col justify-between">
 
             <!-- Fila: Name y Last Name -->
             <div class="grid grid-cols-2 gap-4">
@@ -93,7 +108,7 @@
             <div class="pt-2">
                 <button
                     type="submit"
-                    class="w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition duration-200 uppercase tracking-wide">
+                    class="font-['Baloo_2',_sans-serif] w-full bg-black text-white font-bold py-3 px-4 rounded-lg hover:bg-gray-800 transition duration-200 uppercase tracking-wide">
                     Create Account
                 </button>
             </div>
