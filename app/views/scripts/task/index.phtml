@@ -80,7 +80,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
         </div>
 
         <!-- Task list -->
-        <div class="mt-4 max-h-[35vh] overflow-y-auto pr-2">
+        <div class="relative mt-4 min-h-[35vh] max-h-[35vh] overflow-y-auto pr-2">
             <?php if (!empty($tasks)): ?>
                 <ul class="p-0 m-0 list-none">
                     <?php foreach ($tasks as $task): ?>
@@ -109,7 +109,6 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
                         <!-- Complete Task -->
                         <div class="flex items-center gap-2">
-
                             <form action="/task/update" method="POST" style="display:inline;">
                             <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
                             <input type="hidden" name="status" value="completed">
@@ -141,14 +140,17 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                                 </svg>
                             </button>
                         </form>
-
-                    
-
+                        
                         </li>
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p class="font-['Baloo_2',_serif] text-neutral-400 flex items-center justify-center">Your tasks will appear here.</p>
+                <div class="absolute inset-0 flex items-center justify-center">
+                     <p class="font-['Baloo_2',_serif] text-neutral-400 text-center">
+                        Your tasks will appear here.
+                    </p>
+                </div>
+
             <?php endif; ?>
         </div>
 
