@@ -21,14 +21,14 @@ foreach ($tasks as $task) {
 
 $total = count($tasks);
 
-// temporal hasta que exista sesión real
+
 $username = $this->currentUser['username'] ?? 'Usuario';
 ?>
 
 <body class="bg-gray-200">
 
 <div class="min-h-screen flex items-center justify-center">
-    <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[8px_8px_0_0_#000] p-8">
+    <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[10px_10px_0_0_#000] p-8">
 
         <!-- Header -->
         <div class="flex items-center justify-between">
@@ -36,8 +36,13 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                 Hi. <br><?php echo htmlspecialchars($username); ?>.</br>
             </div>
 
-            <div class="font-['Baloo_2',_serif]">
+            <div class="font-['Baloo_2',_serif] flex">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 17.94 6M18 18 6.06 6"/>
+                </svg>
+
                 <a href="<?php echo WEB_ROOT; ?>/auth/logout">Logout</a>
+                
             </div>
         </div>
 
@@ -76,41 +81,63 @@ $username = $this->currentUser['username'] ?? 'Usuario';
         </div>
 
         <!-- Task list -->
-        <div class="dashboard-task-list">
+        <div class="mt-4 max-h-[35vh] overflow-y-auto pr-2">
             <?php if (!empty($tasks)): ?>
-                <ul>
+                <ul class="p-0 m-0 list-none">
                     <?php foreach ($tasks as $task): ?>
-                        <li class="task-item">
-                            <span class="task-title">
-                                <?php echo htmlspecialchars($task['title']); ?>
+                        <li class="flex items-center gap-2 py-1.5">
+
+                        <!-- Task and line -->
+                        <div class="flex-1 border-b-2 border-black pb-1">
+                            <span class="font-['Baloo_2',_serif] text-base">
+                            <?php echo htmlspecialchars($task['title']); ?>
                             </span>
+                        </div>
+                        
+                        <!-- On work -->
+                        <form action="/task/update" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <input type="hidden" name="status" value="in_progress">
+                            <button type="submit" title="On process" class="font-['Baloo_2',_serif] text-black border border-neutral-800 hover:bg-neutral-800 hover:text-white px-4 py-1.5 rounded-lg">
+                                 On work
+                             </button>
+                        </form>
 
-                                <form action="/task/update" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <input type="hidden" name="status" value="in_progress">
-                                <button type="submit" title="On process">
-                                 🔄
-                                    </button>
-                                </form>
+                        <!-- Complete Task -->
 
-                                <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit">✏️</a>
+                        <div class="flex items-center gap-1">
 
+                            <form action="/task/update" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <input type="hidden" name="status" value="completed">
+                            <button type="submit" title="Completed" class="flex items-center justify-center">
+                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                                        <path d="M18,43c-0.256,0-0.512-0.098-0.707-0.293l-16-16C1.105,26.52,1,26.265,1,26v-2c0-0.347,0.18-0.668,0.474-0.851	c0.295-0.182,0.663-0.198,0.973-0.044l15.466,7.733l26.511-18.656c0.307-0.215,0.707-0.241,1.037-0.07	C45.792,12.285,46,12.626,46,13v2c0,0.265-0.105,0.52-0.293,0.707l-27,27C18.512,42.902,18.256,43,18,43z"></path><polygon fill="#fff" points="45,13 40,8 18,30 7,19 2,24 18,40"></polygon><path d="M18,41c-0.256,0-0.512-0.098-0.707-0.293l-16-16c-0.391-0.391-0.391-1.023,0-1.414l5-5c0.391-0.391,1.023-0.391,1.414,0	L18,28.586L39.293,7.293c0.391-0.391,1.023-0.391,1.414,0l5,5c0.391,0.391,0.391,1.023,0,1.414l-27,27	C18.512,40.902,18.256,41,18,41z M3.414,24L18,38.586L43.586,13L40,9.414L18.707,30.707c-0.391,0.391-1.023,0.391-1.414,0L7,20.414	L3.414,24z"></path>
+                                </svg>
+                            </button>
+                        </form>
 
-                                <form action="/task/update" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <input type="hidden" name="status" value="completed">
-                                <button type="submit" title="Completed">
-                                 ✅
-                                    </button>
-                                </form>
+                        <!-- Edit task -->
 
-                                <form action="/task/delete" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <button type="submit" title="Delete" onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
-                                    🗑
-                                    </button>
-                                </form>
-                            </div>
+                        <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit" class="flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                                <path fill-rule="evenodd" d="M5.034,43.754l2.928-11.7	c0.044-0.175,0.135-0.336,0.263-0.464l23.39-23.395c1.599-1.599,4.196-1.599,5.795,0l4.392,4.392c1.601,1.603,1.604,4.2-0.001,5.799	L18.411,41.781c-0.128,0.128-0.289,0.219-0.465,0.263l-11.7,2.924C5.515,45.15,4.851,44.486,5.034,43.754z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M5.001,41.985v2.001h1.001v-2.001	H5.001z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M42.001,13.539v2.001h1.001v-2.001	H42.001z" clip-rule="evenodd"></path><path fill="#fff" fill-rule="evenodd" d="M6.005,41.997	l2.928-11.7l23.39-23.395c1.208-1.208,3.172-1.208,4.38,0l4.392,4.392c1.212,1.212,1.212,3.176,0,4.384l-23.39,23.395L6.005,41.997z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6.005,41.997l1.756-7.015	l5.259,5.259L6.005,41.997z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M5.034,41.754l2.928-11.7	c0.044-0.175,0.135-0.336,0.263-0.464l23.39-23.395c1.599-1.599,4.196-1.599,5.795,0l4.392,4.392c1.601,1.603,1.604,4.2-0.001,5.799	L18.411,39.781c-0.128,0.128-0.289,0.219-0.465,0.263l-11.7,2.924C5.515,43.15,4.851,42.486,5.034,41.754z M7.379,40.623	l9.813-2.453l23.196-23.199c0.819-0.817,0.821-2.148-0.001-2.969L35.995,7.61c-0.817-0.817-2.148-0.817-2.965,0L9.835,30.809	L7.379,40.623z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M33.807,21.506l-7.312-7.312	c-0.391-0.391-0.391-1.024,0-1.415c0.391-0.391,1.024-0.391,1.415,0l7.312,7.312c0.391,0.391,0.391,1.024,0,1.415	C34.831,21.897,34.198,21.897,33.807,21.506z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M36.731,18.582l-7.312-7.312	c-0.391-0.391-0.391-1.024,0-1.415c0.391-0.391,1.024-0.391,1.415,0l7.312,7.312c0.391,0.391,0.391,1.024,0,1.415	C37.755,18.973,37.122,18.973,36.731,18.582z" clip-rule="evenodd"></path>
+                            </svg>
+                        </a>
+
+                        <!-- Delete task -->
+
+                        <form action="/task/delete" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <button class="flex items-center justify-center" type="submit" title="Delete" onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 48 48">
+                                    <path fill-rule="evenodd" d="M6.998,11.997l0.001-1.999	c0-1.656,1.343-3,3-3h28c1.656,0,3,1.344,3,3v1.999c0,0.552-0.449,1-1,1H7.998C7.445,12.997,6.997,12.549,6.998,11.997z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M8.999,40.993l-0.001-2.001h30.001v2	c0,1.657-1.344,3-3,3h-24C10.342,43.991,8.999,42.649,8.999,40.993z" clip-rule="evenodd"></path><path fill="#fff" fill-rule="evenodd" d="M9.999,38.997v-29h28v29	c0,1.104-0.899,1.997-2.003,1.997h-24C10.893,40.994,9.999,40.101,9.999,38.997z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M8.999,38.997v-29	c0-0.551,0.448-1,1-1h28c0.551,0,1,0.449,1,1v29c0,1.66-1.351,2.997-3.003,2.997h-24C10.339,41.994,8.999,40.654,8.999,38.997z M36.999,38.997v-28h-26v28c0,0.552,0.445,0.997,0.997,0.997h24C36.551,39.994,36.999,39.546,36.999,38.997z" clip-rule="evenodd"></path><path fill="#fff" fill-rule="evenodd" d="M7.998,9.997	l0.001-1.999c0-1.104,0.896-2,2-2h28c1.104,0,2,0.896,2,2v1.999H7.998z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M6.998,9.997l0.001-1.999	c0-1.656,1.343-3,3-3h28c1.656,0,3,1.344,3,3v1.999c0,0.552-0.449,1-1,1H7.998C7.445,10.997,6.997,10.549,6.998,9.997z M38.999,8.997V7.998c0-0.551-0.449-1-1-1h-28c-0.552,0-1,0.449-1,1.001L8.998,8.997H38.999z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M17.999,4.997c0-2.207,1.792-4,4-4h4	c2.207,0,4,1.793,4,4c0,0.552-0.449,1-1,1c-0.552,0-1-0.448-1-1c0-1.101-0.899-2-2-2h-4c-1.103,0-2,0.899-2,2c0,0.552-0.449,1-1,1	C18.447,5.997,17.999,5.549,17.999,4.997z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M22.998,34.998v-19	c0-0.551,0.448-1,1-1c0.551,0,1,0.449,1,1v19c0,0.552-0.449,1-1,1C23.446,35.998,22.998,35.55,22.998,34.998z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M14.998,34.998v-19	c0-0.551,0.448-1,1-1c0.551,0,1,0.449,1,1v19c0,0.552-0.449,1-1,1C15.446,35.998,14.998,35.55,14.998,34.998z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M30.997,34.998v-19	c0-0.551,0.448-1,1-1c0.551,0,1,0.449,1,1v19c0,0.552-0.449,1-1,1C31.445,35.998,30.997,35.55,30.997,34.998z" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </form>
+
+                        </div>
+
                         </li>
                     <?php endforeach; ?>
                 </ul>
