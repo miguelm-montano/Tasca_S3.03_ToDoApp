@@ -37,11 +37,11 @@ $username = $this->currentUser['username'] ?? 'Usuario';
             </div>
 
             <div class="font-['Baloo_2',_serif] text-xs">
-                <a href="<?php echo WEB_ROOT; ?>/auth/logout">
+                <a href="<?php echo WEB_ROOT; ?>/auth/logout" class="flex items-center gap-1">Menu
                 <svg width="20" height="20">
-                    <use href="#logout-icon"></use>
+                    <use href="#menu-icon"></use>
                 </svg>   
-                Logout</a>
+                </a>
             </div>
         </div>
 
@@ -145,11 +145,23 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <div class="absolute inset-0 flex items-center justify-center">
-                     <p class="font-['Baloo_2',_serif] text-neutral-400 text-center">
-                        Your tasks will appear here.
-                    </p>
-                </div>
+                <div class="absolute inset-0 flex items-center justify-start p-6">
+        <div class="flex items-center ">
+            
+            <!-- Imagen -->
+            <img 
+                src="<?= WEB_ROOT ?>/images/MiniGref.png" 
+                alt="No tasks"
+                class="w-44 opacity-30 ml-0"
+            >
+
+            <!-- Texto -->
+            <p class="font-['Baloo_2',_serif] text-neutral-200 text-left text-2xl leading-tight font-bold">
+                Your tasks will appear here.
+            </p>
+
+        </div>
+    </div>
 
             <?php endif; ?>
         </div>
