@@ -21,100 +21,172 @@ foreach ($tasks as $task) {
 
 $total = count($tasks);
 
-// temporal hasta que exista sesión real
+
 $username = $this->currentUser['username'] ?? 'Usuario';
 ?>
 
-<div class="dashboard-container">
-    <div class="dashboard-card">
+<body class="bg-gray-200">
+
+<div class="min-h-screen flex items-center justify-center">
+    <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[10px_10px_0_0_#000] p-8">
 
         <!-- Header -->
-        <div class="dashboard-header">
-            <div class="dashboard-user">
-                Hi! <?php echo htmlspecialchars($username); ?>
+        <div class="flex items-center justify-between">
+            <div class="font-['Holtwood_One_SC',_serif] text-xl">
+                Hi. <br><?php echo htmlspecialchars($username); ?>.</br>
             </div>
 
-            <div class="dashboard-logout">
-                <a href="<?php echo WEB_ROOT; ?>/auth/logout">Logout</a>
-            </div>
+            <!-- Menu -->
+            <details class="relative">
+                <summary class="list-none cursor-pointer flex items-center justify-center 
+                    w-8 h-8 rounded hover:bg-neutral-200 transition &::-webkit-details-marker]:hidden">
+
+                    <svg width="24" height="24" fill="currentColor">
+                        <use href="#menu-icon"></use>
+                    </svg>
+                </summary>
+
+                <div class="absolute right-0 mt-2 w-40 bg-white border border-neutral-200
+                    rounded-lg shadow-md overflow-hidden z-10">
+
+                    <a href="/profile/edit" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
+                        hover:bg-neutral-100 transition">
+                        <img width="20" height="20" src="https://img.icons8.com/badges/48/name.png" alt="name"/>
+                        Edit profile
+                    </a>
+
+                    <a href="<?php echo WEB_ROOT; ?>/auth/logout" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
+                        hover:bg-neutral-100 transition text-red-600">
+                        <svg width="20" height="20" fill="currentColor">
+                            <use href="#logout-icon"></use>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </details>
         </div>
 
         <!-- Title -->
-        <h2 class="dashboard-title">Your tasks</h2>
+        <h2 class="font-['Baloo_2',_serif] mt-4">Your tasks</h2>
 
         <!-- Stats -->
-        <div class="dashboard-stats">
-            <div class="stat-box">
-                <p>Total</p>
-                <strong><?php echo $total; ?></strong>
+        <div class="grid grid-cols-2 gap-4 flex items-center justify-center mt-2">
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Total</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $total; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>Pending</p>
-                <strong><?php echo $pending; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Pending</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $pending; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>On process</p>
-                <strong><?php echo $inProgress; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">On process</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $inProgress; ?></p>
             </div>
 
-            <div class="stat-box">
-                <p>Completed</p>
-                <strong><?php echo $completed; ?></strong>
+            <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
+                <p class="font-['Holtwood_One_SC',_serif] text-white ">Completed</p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $completed; ?></p>
             </div>
         </div>
 
         <!-- Add task -->
-        <div class="dashboard-add-task">
-            <a href="/task/new" class="btn-add-task">
-                ➕ Add task
+        <div class="mt-4">
+            <a href="/task/new" class="block text-center bg-neutral-950 text-white font-['Holtwood_One_SC',_serif]
+            px-5 py-2.5 rounded-xl hover:bg-neutral-500 transition">
+                Add task
             </a>
         </div>
 
         <!-- Task list -->
-        <div class="dashboard-task-list">
+        <div class="relative mt-4 min-h-[35vh] max-h-[35vh] overflow-y-auto pr-2">
             <?php if (!empty($tasks)): ?>
-                <ul>
+                <ul class="p-0 m-0 list-none">
                     <?php foreach ($tasks as $task): ?>
-                        <li class="task-item">
-                            <span class="task-title">
-                                <?php echo htmlspecialchars($task['title']); ?>
+                        <li class="flex items-center gap-2 py-1.5">
+
+                        <!-- Task and line -->
+                         <?php $isCompleted = $task['status'] === 'completed'; ?>
+                        <div class="flex-1 border-b-2 border-black pb-1">
+                            <span class="font-['Baloo_2',_serif] text-base <?= $isCompleted ? 'line-through text-neutral-400' : '' ?>">
+                            <?php echo htmlspecialchars($task['title']); ?>
                             </span>
+                        </div>
+                        
+                        <!-- On work -->
+                        <?php $isInProgress = $task['status'] === 'in_progress';
+                        $newStatus = $isInProgress ? 'pending' : 'in_progress';?>
+                        <form action="/task/update" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <input type="hidden" name="status" value="<?= $newStatus ?>">
+                            <button type="submit" title="On process" class="font-['Baloo_2',_serif] text-black border border-neutral-800
+                            hover:bg-neutral-800 hover:text-white px-4 py-1 rounded-lg transition
+                            <?= $isInProgress ? 'bg-neutral-800 text-white' : 'text-black hover:bg-neutral-800 hover:text-white'?>">
+                                 On work
+                             </button>
+                        </form>
 
-                                <form action="/task/update" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <input type="hidden" name="status" value="in_progress">
-                                <button type="submit" title="On process">
-                                 🔄
-                                    </button>
-                                </form>
+                        <!-- Complete Task -->
+                        <div class="flex items-center gap-2">
+                            <form action="/task/update" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <input type="hidden" name="status" value="completed">
+                            <button type="submit" title="Completed" class="flex items-center justify-center hover:text-green-600 transition 
+                            <?= $isCompleted ? 'text-green-600' : 'hover:text-green-600' ?>">
+                                <svg width="24" height="24" fill="currentColor">
+                                    <use href="#completed-icon"></use>
+                                </svg>
+                            </button>
+                        </form>
 
-                                <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit">✏️</a>
+                        <!-- Edit task -->
 
+                        <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit"
+                        class="flex items-center justify-center hover:text-orange-400 transition">
+                                <svg width="24" height="24" fill="currentColor">
+                                    <use href="#edit-icon"></use>
+                                </svg>
+                        </a>
 
-                                <form action="/task/update" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <input type="hidden" name="status" value="completed">
-                                <button type="submit" title="Completed">
-                                 ✅
-                                    </button>
-                                </form>
+                        <!-- Delete task -->
 
-                                <form action="/task/delete" method="POST" style="display:inline;">
-                                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                                <button type="submit" title="Delete" onclick="return confirm('¿Seguro que quieres eliminar esta tarea?');">
-                                    🗑
-                                    </button>
-                                </form>
-                            </div>
+                        <form action="/task/delete" method="POST" style="display:inline;">
+                            <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+                            <button class="flex items-center justify-center hover:text-red-600 transition" type="submit" title="Delete"
+                            onclick="return confirm('Are you sure you want to delete this task?');">
+                                <svg width="24" height="24" fill="currentColor">
+                                    <use href="#delete-icon"></use>
+                                </svg>
+                            </button>
+                        </form>
+                        
                         </li>
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
-                <p>No tasks yet.</p>
+                <div class="absolute inset-0 flex items-center justify-start p-6">
+        <div class="flex items-center ">
+            
+            <!-- Imagen -->
+            <img 
+                src="<?= WEB_ROOT ?>/images/MiniGref.png" 
+                alt="No tasks"
+                class="w-44 opacity-30 ml-0"
+            >
+
+            <!-- Texto -->
+            <p class="font-['Baloo_2',_serif] text-neutral-200 text-left text-2xl leading-tight font-bold">
+                Your tasks will appear here.
+            </p>
+
+        </div>
+    </div>
+
             <?php endif; ?>
         </div>
 
     </div>
 </div>
+</body>

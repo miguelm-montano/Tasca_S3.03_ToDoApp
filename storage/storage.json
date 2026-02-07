@@ -1,29 +1,4 @@
 {
-    "users": [
-        {
-            "id": 1770195919,
-            "name": "Salem",
-            "surname": "Del Caldero",
-            "username": "salemdelcaldero",
-            "email": "salem@telsur.cl",
-            "created_at": "2026-02-04 10:05:19"
-        },
-        {
-            "id": 1770197710,
-            "name": "Mal",
-            "surname": "Mental",
-            "username": "malmental",
-            "email": "malmental@telsur.cl",
-            "created_at": "2026-02-04 10:35:10"
-        },
-        {
-            "id": 1770197878,
-            "name": "Dungeon",
-            "surname": "Gobling",
-            "username": "dungeon_goblin",
-            "email": "trasgo@hell.cc",
-            "created_at": "2026-02-04 10:37:58"
-        }
-    ],
+    "users": [],
     "tasks": []
 }
