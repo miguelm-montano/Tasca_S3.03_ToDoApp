@@ -36,13 +36,34 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                 Hi. <br><?php echo htmlspecialchars($username); ?>.</br>
             </div>
 
-            <div class="font-['Baloo_2',_serif] text-xs">
-                <a href="<?php echo WEB_ROOT; ?>/auth/logout" class="flex items-center gap-1">Menu
-                <svg width="20" height="20">
-                    <use href="#menu-icon"></use>
-                </svg>   
-                </a>
-            </div>
+            <!-- Menu -->
+            <details class="relative">
+                <summary class="list-none cursor-pointer flex items-center justify-center 
+                    w-8 h-8 rounded hover:bg-neutral-200 transition &::-webkit-details-marker]:hidden">
+
+                    <svg width="24" height="24" fill="currentColor">
+                        <use href="#menu-icon"></use>
+                    </svg>
+                </summary>
+
+                <div class="absolute right-0 mt-2 w-40 bg-white border border-neutral-200
+                    rounded-lg shadow-md overflow-hidden z-10">
+
+                    <a href="/profile/edit" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
+                        hover:bg-neutral-100 transition">
+                        <img width="20" height="20" src="https://img.icons8.com/badges/48/name.png" alt="name"/>
+                        Edit profile
+                    </a>
+
+                    <a href="<?php echo WEB_ROOT; ?>/auth/logout" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
+                        hover:bg-neutral-100 transition text-red-600">
+                        <svg width="20" height="20" fill="currentColor">
+                            <use href="#logout-icon"></use>
+                        </svg>
+                        Logout
+                    </a>
+                </div>
+            </details>
         </div>
 
         <!-- Title -->
