@@ -3,13 +3,17 @@ $task = $this->task ?? null;
 $isEdit = $task !== null;
 ?>
 
-<h2><?php echo $isEdit ? 'Edit task' : 'New task'; ?></h2>
+<body class="bg-gray-200">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-gray-50 max-w-4xl w-[35%] min-h-[70vh] rounded-2xl shadow-[10px_10px_0_0_#000] p-8">
 
-<form method="POST" action="<?php echo $isEdit ? '/task/update-content' : '/task/add'; ?>">
+            <h2><?php echo $isEdit ? 'Edit task' : 'New task'; ?></h2>
 
-    <?php if ($isEdit): ?>
-        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-    <?php endif; ?>
+            <form method="POST" action="<?php echo $isEdit ? '/task/update-content' : '/task/add'; ?>">
+
+            <?php if ($isEdit): ?>
+                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+            <?php endif; ?>
 
     <!-- Title -->
     <div class="form-group">
@@ -68,3 +72,9 @@ $isEdit = $task !== null;
     </div>
 
 </form>
+
+        </div>
+    </div>
+    
+
+</body>
