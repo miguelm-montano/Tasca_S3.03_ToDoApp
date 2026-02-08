@@ -23,7 +23,33 @@
             "username": "dungeon_goblin",
             "email": "trasgo@hell.cc",
             "created_at": "2026-02-04 10:37:58"
+        },
+        {
+            "id": 1770369099,
+            "name": "Mathild",
+            "surname": "Salas",
+            "username": "kitanasalas",
+            "email": "kitana@hola.cc",
+            "created_at": "2026-02-06 10:11:39"
+        },
+        {
+            "id": 1770369180,
+            "name": "o",
+            "surname": "o",
+            "username": "o",
+            "email": "o@h.cc",
+            "created_at": "2026-02-06 10:13:00"
         }
     ],
-    "tasks": []
+    "tasks": [
+        {
+            "id": 1770369137,
+            "userId": 1770369099,
+            "title": "comprar pan",
+            "description": "panpan",
+            "created_at": "2026-02-07",
+            "due_date": "2026-02-08",
+            "status": "pending"
+        }
+    ]
 }
