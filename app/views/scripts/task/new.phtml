@@ -3,39 +3,78 @@ $task = $this->task ?? null;
 $isEdit = $task !== null;
 ?>
 
-<h2><?php echo $isEdit ? 'Edit task' : 'New task'; ?></h2>
+<body class="bg-gray-200">
+    <div class="min-h-screen flex items-center justify-center">
+        <div class="bg-gray-50 max-w-4xl w-[30%] min-h-[64vh] rounded-2xl shadow-[10px_10px_0_0_#000] p-8">
+            <form method="POST" action="<?php echo $isEdit ? '/task/update-content' : '/task/add'; ?>">
 
-<form method="POST" action="<?php echo $isEdit ? '/task/update-content' : '/task/add'; ?>">
+            <?php if ($isEdit): ?>
+                <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
+            <?php endif; ?>
 
-    <?php if ($isEdit): ?>
-        <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-    <?php endif; ?>
+                <!-- Header -->
+             <div class="flex justify-end font-['Holtwood_One_SC',_serif] text-xl">
+                <div class="flex items-center gap-2">
 
-    <!-- Title -->
-    <div class="form-group">
-        <label for="title">Title *</label>
-        <input
-            type="text"
-            id="title"
-            name="title"
-            required
-            placeholder="Task title"
-            value="<?php echo $isEdit ? htmlspecialchars($task['title']) : ''; ?>">
-    </div>
+                <!-- Texto en dos líneas -->
+                <div class="text-right leading-none">
+                    <div class="font-['Holtwood_One_SC',_serif] text-2xl">
+                        <?php echo $isEdit ? 'EDIT' : 'NEW'; ?>
+                    </div>
+                <div class="font-['Holtwood_One_SC',_serif] text-2xl">
+                        TASK
+                    </div>
+                </div>
 
-    <!-- Description -->
-    <div class="form-group">
-        <label for="description">Description</label>
-        <textarea
-            id="description"
-            name="description"
-            placeholder="Optional description"
-        ><?php echo $isEdit ? htmlspecialchars($task['description']) : ''; ?></textarea>
-    </div>
+                <!-- Exclamación -->
+                <div class="font-['Holtwood_One_SC',_serif] text-6xl leading-none">
+                    !
+                </div>
+
+                </div>
+            </div>
+
+                <!-- Title -->
+            <div class="form-group flex flex-col gap-1 w-full">
+                <label for="title" class="font-['Holtwood_One_SC',_serif] text-xl">Title</label>
+
+            <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                placeholder="Task title"
+                value="<?php echo $isEdit ? htmlspecialchars($task['title'] ?? '') : ''; ?>"
+                class="w-full px-3 py-2 border border-neutral-800 rounded-lg
+               font-['Baloo_2',_serif] focus:outline-none focus:ring-1 focus:ring-neutral-800 bg-gray-50">
+            </div>
+
+                <!-- Description -->
+            <div class="form-group flex flex-col gap-1 w-full">
+            <label for="description" class="font-['Holtwood_One_SC',_serif] text-xl mt-4">Description</label>
+
+            <textarea
+                id="description"
+                name="description"
+                placeholder="Optional description"
+                rows="3"
+                class="w-full px-3 py-2 border border-neutral-800 rounded-lg
+                font-['Baloo_2',_serif] focus:outline-none focus:ring-1 focus:ring-neutral-800 bg-gray-50"
+                ><?php echo $isEdit ? htmlspecialchars($task['description'] ?? '') : ''; ?></textarea>
+            </div>
+
+<!-- Dates -->
+<div class="grid grid-cols-2 gap-6 mt-4">
 
     <!-- Creation date -->
-    <div class="form-group">
-        <label for="created_at">Creation date *</label>
+    <div class="flex flex-col items-start">
+        <label for="created_at"
+               class="font-['Holtwood_One_SC',_serif] text-sm text-right flex items-center gap-1">
+               <img width="22" height="22"
+                src="https://img.icons8.com/badges/50/calendar.png" alt="calendar"/>
+            Creation date *
+        </label>
+
         <input
             type="date"
             id="created_at"
@@ -43,28 +82,51 @@ $isEdit = $task !== null;
             required
             value="<?php echo $isEdit ? $task['created_at'] : ''; ?>"
             <?php echo $isEdit ? 'readonly' : ''; ?>
-        >
+            class="mt-1 w-full px-3 py-2 border border-neutral-800 rounded-lg
+                   font-['Baloo_2',_serif] bg-gray-50">
     </div>
 
     <!-- Due date -->
-    <div class="form-group">
-        <label for="due_date">End date</label>
+    <div class="flex flex-col items-start">
+        <label for="due_date"
+               class="font-['Holtwood_One_SC',_serif] text-sm text-left">
+            End date
+        </label>
+
         <input
             type="date"
             id="due_date"
             name="due_date"
-            value="<?php echo $isEdit ? $task['due_date'] : ''; ?>">
+            value="<?php echo $isEdit ? $task['due_date'] : ''; ?>"
+            class="mt-1 w-full px-3 py-2 border border-neutral-800 rounded-lg
+                   font-['Baloo_2',_serif] bg-gray-50"
+        >
     </div>
 
-    <!-- Actions -->
-    <div class="form-actions">
-        <button type="submit">
-            <?php echo $isEdit ? 'Update task' : 'Save task'; ?>
-        </button>
+</div>
 
-        <a href="/task">
-            Go back
-        </a>
+<!-- Actions -->
+<div class="mt-9 flex flex-col gap-2 w-full">
+
+    <button
+        type="submit"
+        class="w-full text-center bg-neutral-950 text-white
+               font-['Holtwood_One_SC',_serif]
+               px-5 py-2.5 rounded-xl
+               hover:bg-neutral-700 transition"
+    >
+        <?php echo $isEdit ? 'Update task' : 'Save task'; ?>
+    </button>
+
+    <a
+        href="/task"
+        class="w-full text-center bg-neutral-300 text-black
+               font-['Holtwood_One_SC',_serif]
+               px-5 py-2.5 rounded-xl
+               hover:bg-neutral-400 transition"
+    >
+        Go back
+    </a>
+        </form>
     </div>
-
-</form>
+</body>
