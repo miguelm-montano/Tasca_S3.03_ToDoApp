@@ -1,83 +1,62 @@
-# PHP initial Project
-Main structure of php project. Folders / files:
-- **app**
-  - **controllers**
-  - **models**
-  - **views**
-- **config**
-- **lib**
-  - **base**
-- **web**
+# To.Do List!
 
-### Usage
+![This is an alt text.](web/images/BannerToDoList.jpg "Banner To.Do List.")
 
-The web/index.php is the heart of the system.
-This means that your web applications root folder is the “web” folder.
+## General Info
+**To.Do List** is a project developed to put into practice the fundamental concepts learned during *Sprint 1* and *Sprint 2*, using the MVC (Model–View–Controller) architectural pattern.
+The development is based on an existing codebase originally created by another developer.
 
-All requests go through this file and it decides how the routing of the app
-should be.
-You can add additional hooks in this file to add certain routes.
+For this reason, a significant amount of time was dedicated to understanding how the application is structured and why it works in its current way before implementing new features and improvements.
 
-### Project Structure
+The application simulates a user registration system, allowing each user to manage their daily tasks.
 
-The root of the project holds a few directories:
-**/app** This is the folder where your magic will happen. Use the views, controllers and models folder for your app code.
-**/config** this folder holds a few configuration files. Currently only the connection to the database.
-**/lib** This is where you should put external libraries and other external files.
-**/lib/base** The library files. Don’t change these :)
-**/web** This folder holds files that are to be “downloaded” from your app. Stylesheets, javascripts and images used. (and more of course)
+## Technologies Used
 
-The system uses a basic MVC structure, with your web app’s files located in the
-“app” folder.
+* PHP
+* Tailwind
+* .JSON
+* MySQL
 
-#### app/controllers
-Your application’s controllers should be defined here.
+## Features
 
-All controller names should end with “Controller”. E.g. TestController.
-All controllers should inherit the library’s “Controller” class.
-However, you should generally just make an ApplicationController, which extends
-the Controller. Then you can defined beforeFilters etc in that, which will get run
-at every request.
+1. Create account
+2. Create daily tasks
+3. Mark tasks in progress
+4. Mark completed tasks
+5. Delete Tasks
+6. Edit tasks
+3. Dashboar
+    1. Redirect to previous user
+    2. Delete users
 
-#### app/models
-Models handles database interaction etc.
+## Setup
 
-All models should inherit from the Model class, which provides basic functionality.
-The Model class handles basic functionality such as:
+Clone the repository
+```
+https://github.com/miguelm-montano/Tasca_S3.03_ToDoApp.git
+```
 
-Setting up a database connection (using PDO)
-fetchOne(ID)
-save(array) → both update/create
-delete(ID)
-app/views
-Your view files.
-The structure is made so that having a controller named TestController, it looks
-in the app/views/test/ folder for it’s view files.
+From the terminal in develop branch:
+```
+php -S localhost:8000 -t web 
+```
 
-All view files end with .phtml
-Having an action in the TestController called index, the view file
-app/views/test/index.phtml will be rendered as default.
+From your browser:
+```
+http://localhost:8000
+```
 
-#### config/routes.php
-Your routes around the system needs to be defined here.
-A route consists of the URL you want to call + the controller#action you want it
-to hit.
+## Project Status
 
-An example is:
-$routes = array(
-‘/test’ => ‘test#index’ // this will hit the TestController’s indexAction method.
-);
+The project currently works with both JSON-based storage and a MySQL database. All core functionalities are fully implemented and the application meets the basic project requirements.
 
-#### Error handling
-A general error handling has been added.
+**Currently, input fields do not have validation implemented.**
 
-If a route doesn’t exist, then the error controller is hit.
-If some other exception was thrown, the error controller is hit.
-As default, the error controller just shows the exception occured, so remember
-to style the error controller’s view file (app/views/error/error.phtml)
+## Future Features
 
-
-### Utilities
-- [PHP Developers Guide](https://www.php.net/manual/en/index.php).
-- .gitignore file configuration. [See Official Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files).
-- Git branches. [See Official Docs](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell).
+Some features that could be implemented in future versions of the project include:
+* Adding password-based authentication for each user account.
+* Complete validations where required.
+* Improving task listing behavior so that completed tasks are automatically moved to the end of the list.
+* Allowing users to upload a profile picture for their account.
+* Implement task groups by type.

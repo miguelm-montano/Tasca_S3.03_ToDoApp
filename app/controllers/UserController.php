@@ -5,16 +5,16 @@ require_once __DIR__ . '/helpers/SessionHelper.php';
 
 class UserController extends ApplicationController 
 {
+
     private $sessionHelper;
 
     public function __construct() 
     {
-
         $this->sessionHelper = new SessionHelper();
     }
 
-    public function indexAction() {
-
+    public function indexAction() 
+    {
         $this->sessionHelper->startSession();
 
         $userModel = new User();
@@ -25,26 +25,30 @@ class UserController extends ApplicationController
             $this->view->canEdit = true;
         } else {
             $this->view->currentUser = null;
-            $this->view->canEdit = false;
+            $this->view->canEdit = true;
         }
     }
 
-    public function addAction()
+     public function loginAsAction()
     {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $name = $_POST['name'] ?? '';
-            $surname = $_POST['surname'] ?? '';
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-
-            $userModel = new User();
-
-            $userModel->addUser($name, $surname, $username, $email);
-
-            header('Location: ' . WEB_ROOT . '/dashboard');
+    $this->sessionHelper->startSession();
+    
+    $userId = $_GET['id'] ?? 0;
+    
+    if ($userId > 0) {
+        $userModel = new User();
+        $user = $userModel->getUserById($userId);
+        
+        if ($user) {
+            $this->sessionHelper->setUser($user);
+            header('Location: ' . WEB_ROOT . '/task');
             exit;
         }
+    }
+    
+    // Si no encuentra el usuario, vuelve a la lista de usuarios
+    header('Location: ' . WEB_ROOT . '/users');
+    exit;
     }
 
     public function deleteAction()
@@ -59,70 +63,14 @@ class UserController extends ApplicationController
         $userModel->deleteUser($userId);
 
         if ($isSelfDelete) {
-            $this->sessionHelper->destroySession();
-            header('Location: ' . WEB_ROOT . '/');
+            unset($_SESSION['logged_in']);
+            unset($_SESSION['user']);
+            header('Location: ' . WEB_ROOT . '/users');
         } else {
-            header('Location: ' . WEB_ROOT . '/dashboard');
+            header('Location: ' . WEB_ROOT . '/users');
         }
         exit;
     }
-
-    public function editAction()
-    {
-        $userId = $_GET['id'] ?? 0;
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $id = $_POST['id'] ?? 0;
-            $name = $_POST['name'] ?? '';
-            $surname = $_POST['surname'] ?? '';
-            $username = $_POST['username'] ?? '';
-            $email = $_POST['email'] ?? '';
-
-            $userModel = new User();
-
-            $userModel->updateUser($id, $name, $surname, $username, $email);
-
-            header('Location: ' . WEB_ROOT . '/dashboard');
-            exit;
-        }
-        $userModel = new User();
-        $this->view->user = $userModel->getUserById($userId);
-    }
-
-    public function deleteAllAction()
-    {
-        $this->sessionHelper->startSession();
-
-        $userModel = new User();
-        $userModel->deleteAllUsers();
-
-        $this->sessionHelper->destroySession();
-
-        header('Location: ' . WEB_ROOT . '/');
-        exit;
-    }
-
-    public function loginAsAction()
-    {
-        $this->sessionHelper->startSession();
-
-        $userId = $_GET['id'] ?? 0;
-
-        if ($userId > 0) {
-            $userModel = new User();
-            $user = $userModel->getUserById($userId);
-
-            if ($user) {
-                $this->sessionHelper->setUser($user);
-                header('Location: ' . WEB_ROOT . '/task');
-            }
-            exit;
-        }
-
-        header('Location: ' . WEB_ROOT . '/users');
-        exit;
-    }
-
 
     public function editProfileAction()
 {
