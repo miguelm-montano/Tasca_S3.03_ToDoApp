@@ -19,9 +19,6 @@ $routes = array(
 	'/auth/register' => 'auth#register',
 	'/auth/logout' => 'auth#logout',
 
-	// dashboard
-	'/dashboard' => 'dashboard#index',
-
 	// tasks
 	'/task' => 'task#index',
 	'/task/new' => 'task#new',
@@ -34,8 +31,6 @@ $routes = array(
 	// users
 	'/users' => 'user#index',
 	'/users/login-as' => 'user#loginAs',
-	'/users/add' => 'user#add',
-	'/users/edit' => 'user#edit',
 	'/users/delete' => 'user#delete',
-	'/users/delete-all' => 'user#deleteAll',
+	'/profile/edit' => 'user#editProfile'
 );
