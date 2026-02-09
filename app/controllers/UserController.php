@@ -122,4 +122,31 @@ class UserController extends ApplicationController
         header('Location: ' . WEB_ROOT . '/users');
         exit;
     }
+
+
+    public function editProfileAction()
+{
+    $this->sessionHelper->requireLogin();
+    $currentUser = $this->sessionHelper->getCurrentUser();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $currentUser['id'];
+        $name = $_POST['name'] ?? '';
+        $surname = $_POST['surname'] ?? '';
+        $username = $_POST['username'] ?? '';
+        $email = $_POST['email'] ?? '';
+        
+        $userModel = new User();
+        $updatedUser = $userModel->updateUser($id, $name, $surname, $username, $email);
+        
+        // Actualizar la sesión con los nuevos datos
+        $this->sessionHelper->setUser($updatedUser);
+        
+        header('Location: ' . WEB_ROOT . '/task');
+        exit;
+    }
+    
+    $this->view->user = $currentUser;
+}
+
 }

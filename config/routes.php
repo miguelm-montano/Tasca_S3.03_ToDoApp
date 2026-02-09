@@ -38,4 +38,5 @@ $routes = array(
 	'/users/edit' => 'user#edit',
 	'/users/delete' => 'user#delete',
 	'/users/delete-all' => 'user#deleteAll',
+	'/profile/edit' => 'user#editProfile'
 );
