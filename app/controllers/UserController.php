@@ -5,16 +5,16 @@ require_once __DIR__ . '/helpers/SessionHelper.php';
 
 class UserController extends ApplicationController 
 {
+
     private $sessionHelper;
 
     public function __construct() 
     {
-
         $this->sessionHelper = new SessionHelper();
     }
 
-    public function indexAction() {
-
+    public function indexAction() 
+    {
         $this->sessionHelper->startSession();
 
         $userModel = new User();
@@ -25,7 +25,7 @@ class UserController extends ApplicationController
             $this->view->canEdit = true;
         } else {
             $this->view->currentUser = null;
-            $this->view->canEdit = false;
+            $this->view->canEdit = true;
         }
     }
 
@@ -59,10 +59,11 @@ class UserController extends ApplicationController
         $userModel->deleteUser($userId);
 
         if ($isSelfDelete) {
-            $this->sessionHelper->destroySession();
-            header('Location: ' . WEB_ROOT . '/');
+            unset($_SESSION['logged_in']);
+            unset($_SESSION['user']);
+            header('Location: ' . WEB_ROOT . '/users');
         } else {
-            header('Location: ' . WEB_ROOT . '/dashboard');
+            header('Location: ' . WEB_ROOT . '/users');
         }
         exit;
     }
@@ -104,22 +105,23 @@ class UserController extends ApplicationController
 
     public function loginAsAction()
     {
-        $this->sessionHelper->startSession();
-
-        $userId = $_GET['id'] ?? 0;
-
-        if ($userId > 0) {
-            $userModel = new User();
-            $user = $userModel->getUserById($userId);
-
-            if ($user) {
-                $this->sessionHelper->setUser($user);
-                header('Location: ' . WEB_ROOT . '/task');
-            }
+    $this->sessionHelper->startSession();
+    
+    $userId = $_GET['id'] ?? 0;
+    
+    if ($userId > 0) {
+        $userModel = new User();
+        $user = $userModel->getUserById($userId);
+        
+        if ($user) {
+            $this->sessionHelper->setUser($user);
+            header('Location: ' . WEB_ROOT . '/task');
             exit;
         }
-
-        header('Location: ' . WEB_ROOT . '/users');
-        exit;
+    }
+    
+    // Si no encuentra el usuario, vuelve a la lista de usuarios
+    header('Location: ' . WEB_ROOT . '/users');
+    exit;
     }
 }
