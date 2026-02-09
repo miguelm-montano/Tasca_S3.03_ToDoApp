@@ -27,6 +27,24 @@ class TaskController extends ApplicationController {
     public function newAction() {
         $this->sessionHelper->requireLogin();
         //Para render de la vista
+
+        $userId = $this->sessionHelper->getCurrentUserId();
+    
+    // Verificar si estamos editando
+    $taskId = $_GET['id'] ?? null;
+    
+    if ($taskId) {
+        // Modo edición
+        $taskModel = new Task();
+        $task = $taskModel->getTaskById($userId, $taskId);
+        
+        if ($task) {
+            $this->view->task = $task;
+        } else {
+            header('Location:' . WEB_ROOT . '/task');
+            exit;
+            }
+        }
     }
 
     public function addTaskAction() {
