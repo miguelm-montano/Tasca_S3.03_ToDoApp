@@ -1,28 +1,34 @@
 <?php
 
-require_once __DIR__ . '/TaskStorage.php';
+require_once ROOT_PATH . '/database/connection.php';
 
 class Task {
 
-    private $storage;
-    private $data;
+    private PDO $db;
 
     public function __construct() {
 
-        $this->storage = new TaskStorage();
-        $this->data = $this->storage->getData();
+        $this->db = getConnection();
     }
 
     public function getAllTasks($userId): array {
 
-        $tasks = [];
-        foreach($this->data['tasks'] as $task) {
-            if($task['userId'] == $userId) {
-                $tasks[] = $task;
-            }
-        }
+        $stmt = $this->db->prepare("
+        SELECT 
+            id,
+            user_id,
+            title,
+            description,
+            status,
+            creation_date AS created_at,
+            end_date AS due_date
+        FROM tasks
+        WHERE user_id = :user_id
+        ORDER BY creation_date DESC");
 
-        return $tasks;
+        $stmt->execute(['user_id' => $userId]);
+
+        return $stmt->fetchAll();
     }
 
     public function addTask($userId, $title, ?string $description, ?string $createdAt, ?string $dueDate): array {
