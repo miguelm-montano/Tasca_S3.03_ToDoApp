@@ -30,19 +30,19 @@ class TaskController extends ApplicationController {
 
         $userId = $this->sessionHelper->getCurrentUserId();
     
-    // Verificar si estamos editando
-    $taskId = $_GET['id'] ?? null;
+        // Verificar si estamos editando
+        $taskId = $_GET['id'] ?? null;
     
-    if ($taskId) {
+        if ($taskId) {
         // Modo edición
-        $taskModel = new Task();
-        $task = $taskModel->getTaskById($userId, $taskId);
+            $taskModel = new Task();
+            $task = $taskModel->getTaskById($userId, $taskId);
         
-        if ($task) {
-            $this->view->task = $task;
-        } else {
-            header('Location:' . WEB_ROOT . '/task');
-            exit;
+            if ($task) {
+                $this->view->task = $task;
+            } else {
+                header('Location:' . WEB_ROOT . '/task');
+                exit;
             }
         }
     }
@@ -54,13 +54,20 @@ class TaskController extends ApplicationController {
 
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $createdAt = $_POST['created_at'] ?? null;
-        $dueDate = $_POST['due_date'] ?? null;
+    
+        // Convertir fechas: si está vacío o solo es una fecha (sin hora), añadir hora
+        $createdAt = !empty($_POST['created_at']) 
+            ? $_POST['created_at'] . ' ' . date('H:i:s') 
+            : date('Y-m-d H:i:s');
+    
+        $dueDate = !empty($_POST['due_date']) 
+            ? $_POST['due_date'] . ' 23:59:59' 
+            : null;
 
         if(!empty($title)) {
             $taskModel = new Task();
             $taskModel->addTask($userId, $title, $description ?: null, $createdAt, $dueDate);
-        }
+    }
 
         header('Location:' . WEB_ROOT . '/task');
         exit;
@@ -131,22 +138,22 @@ class TaskController extends ApplicationController {
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
         $dueDate = $_POST['due_date'] ?? null;
+        
+        $dueDate = !empty($dueDate) ? $dueDate . ' 23:59:59' : null;
 
     if ($taskId && $title) {
 
-            $taskModel = new Task();
-            $taskModel->updateTaskContent(
-            $userId,
-            $taskId,
-            $title,
-            $description ?: null,
-            $dueDate);
-        }
-
-        header('Location:' . WEB_ROOT . '/task');
-        exit;
-}
-
-
+        $taskModel = new Task();
+        $taskModel->updateTaskContent(
+        $userId,
+        $taskId,
+        $title,
+        $description ?: null,
+        $dueDate);
+    }
+    
+    header('Location:' . WEB_ROOT . '/task');
+    exit;
+    }
 }
 ?>

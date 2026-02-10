@@ -33,84 +33,125 @@ class Task {
 
     public function addTask($userId, $title, ?string $description, ?string $createdAt, ?string $dueDate): array {
 
-        $newTask = [
-            'id' => time(),
-            'userId' => $userId,
+        $stmt = $this->db->prepare("
+            INSERT INTO tasks (user_id, title, description, creation_date, end_date, status)
+            VALUES (:user_id, :title, :description, :creation_date, :end_date, 'pending')
+        ");
+        
+        $stmt->execute([
+            'user_id' => $userId,
+            'title' => $title,
+            'description' => $description,
+            'creation_date' => $createdAt,
+            'end_date' => $dueDate
+        ]);
+        
+        // Obtener el ID auto-generado
+        $newId = $this->db->lastInsertId();
+        
+        // Devolver la tarea creada
+        return [
+            'id' => $newId,
+            'user_id' => $userId,
             'title' => $title,
             'description' => $description,
             'created_at' => $createdAt,
             'due_date' => $dueDate,
             'status' => 'pending'
         ];
-
-        $this->data['tasks'][] = $newTask;
-        $this->storage->setData($this->data);
-        
-        return $newTask;
     }
 
     public function updateTask($userId, $taskId, $newStatus): array | null {
 
-        foreach($this->data['tasks'] as $index => $task) {
-            if($task['userId'] == $userId && $task['id'] == $taskId) {
-                $this->data['tasks'][$index]['status'] = $newStatus;
-                $this->storage->setData($this->data);
-                return $task;
-            }
+        $stmt = $this->db->prepare("
+            UPDATE tasks 
+            SET status = :status 
+            WHERE user_id = :user_id AND id = :task_id
+        ");
+        
+        $stmt->execute([
+            'status' => $newStatus,
+            'user_id' => $userId,
+            'task_id' => $taskId
+        ]);
+        
+        // Si se actualizó alguna fila, devolver la tarea
+        if ($stmt->rowCount() > 0) {
+            return $this->getTaskById($userId, $taskId);
         }
+        
         return null;
     }
 
     public function deleteTask($userId, $taskId): bool {
 
-        foreach ($this->data['tasks'] as $index => $task) {
-            if ($task['userId'] == $userId && $task['id'] == $taskId) {
-                array_splice($this->data['tasks'], $index, 1);
-                $this->storage->setData($this->data);
-                return true;
-            }
-        }
-        return false;
+        $stmt = $this->db->prepare("
+            DELETE FROM tasks 
+            WHERE user_id = :user_id AND id = :task_id
+        ");
+        
+        $stmt->execute([
+            'user_id' => $userId,
+            'task_id' => $taskId
+        ]);
+        
+        return $stmt->rowCount() > 0;
     }
 
     public function deleteAllTasksByUserId($userId): bool {
-    // Filtrar las tareas: mantener solo las que NO pertenecen al usuario
-        $this->data['tasks'] = array_filter($this->data['tasks'], function($task) use ($userId) {
-        return $task['userId'] != $userId;
-        });
-    
-    // Re-indexar el array para mantener índices consecutivos
-        $this->data['tasks'] = array_values($this->data['tasks']);
-    
-    // Guardar los cambios
-        $this->storage->setData($this->data);
-    
+
+        $stmt = $this->db->prepare("
+            DELETE FROM tasks 
+            WHERE user_id = :user_id
+        ");
+        
+        $stmt->execute(['user_id' => $userId]);
+        
         return true;
     }
 
     public function getTaskById($userId, $taskId) {
 
-        foreach ($this->data['tasks'] as $task) {
-            if ($task['userId'] == $userId && $task['id'] == $taskId) {
-                return $task;
-        }
-    }
-        return null;
+        $stmt = $this->db->prepare("
+            SELECT 
+                id,
+                user_id,
+                title,
+                description,
+                status,
+                creation_date AS created_at,
+                end_date AS due_date
+            FROM tasks
+            WHERE user_id = :user_id AND id = :task_id
+        ");
+        
+        $stmt->execute([
+            'user_id' => $userId,
+            'task_id' => $taskId
+        ]);
+        
+        return $stmt->fetch();
     }
 
     public function updateTaskContent($userId, $taskId, $title, $description, $dueDate) {
     
-        foreach ($this->data['tasks'] as $index => $task) {
-            if ($task['userId'] == $userId && $task['id'] == $taskId) {
-                $this->data['tasks'][$index]['title'] = $title;
-                $this->data['tasks'][$index]['description'] = $description;
-                $this->data['tasks'][$index]['due_date'] = $dueDate;
-                $this->storage->setData($this->data);
-                return true;
-        }
-    }
-    
-    return false;
+        $stmt = $this->db->prepare("
+            UPDATE tasks 
+            SET title = :title, 
+                description = :description, 
+                end_date = :due_date
+            WHERE user_id = :user_id AND id = :task_id
+        ");
+        
+        $stmt->execute([
+            'title' => $title,
+            'description' => $description,
+            'due_date' => $dueDate,
+            'user_id' => $userId,
+            'task_id' => $taskId
+        ]);
+        
+        return $stmt->rowCount() > 0;
 }
 
 }
