@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-02-2026 a las 13:01:03
+-- Tiempo de generación: 10-02-2026 a las 22:02:51
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -33,8 +33,8 @@ CREATE TABLE `tasks` (
   `title` varchar(150) NOT NULL,
   `description` text DEFAULT NULL,
   `status` enum('pending','on_process','finished') NOT NULL DEFAULT 'pending',
-  `creation_date` datetime NOT NULL DEFAULT current_timestamp(),
-  `end_date` datetime DEFAULT NULL
+  `creation_date` date NOT NULL DEFAULT current_timestamp(),
+  `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -50,6 +50,13 @@ CREATE TABLE `users` (
   `email` varchar(150) NOT NULL,
   `username` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `users`
+--
+
+INSERT INTO `users` (`id`, `name`, `surname`, `email`, `username`) VALUES
+(1, 'Test', 'User', 'test@test.com', 'testuser');
 
 --
 -- Índices para tablas volcadas
@@ -78,13 +85,13 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas

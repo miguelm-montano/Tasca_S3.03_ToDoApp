@@ -54,20 +54,13 @@ class TaskController extends ApplicationController {
 
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-    
-        // Convertir fechas: si está vacío o solo es una fecha (sin hora), añadir hora
-        $createdAt = !empty($_POST['created_at']) 
-            ? $_POST['created_at'] . ' ' . date('H:i:s') 
-            : date('Y-m-d H:i:s');
-    
-        $dueDate = !empty($_POST['due_date']) 
-            ? $_POST['due_date'] . ' 23:59:59' 
-            : null;
+        $createdAt = $_POST['created_at'] ?? date('Y-m-d');
+        $dueDate = !empty($_POST['due_date']) ? $_POST['due_date'] : null;
 
         if(!empty($title)) {
             $taskModel = new Task();
             $taskModel->addTask($userId, $title, $description ?: null, $createdAt, $dueDate);
-    }
+        }
 
         header('Location:' . WEB_ROOT . '/task');
         exit;
@@ -137,23 +130,15 @@ class TaskController extends ApplicationController {
         $taskId = $_POST['task_id'] ?? null;
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $dueDate = $_POST['due_date'] ?? null;
-        
-        $dueDate = !empty($dueDate) ? $dueDate . ' 23:59:59' : null;
+        $dueDate = !empty($_POST['due_date']) ? $_POST['due_date'] : null;
 
-    if ($taskId && $title) {
+        if ($taskId && $title) {
+            $taskModel = new Task();
+            $taskModel->updateTaskContent($userId, $taskId, $title, $description ?: null, $dueDate);
+        }
 
-        $taskModel = new Task();
-        $taskModel->updateTaskContent(
-        $userId,
-        $taskId,
-        $title,
-        $description ?: null,
-        $dueDate);
-    }
-    
-    header('Location:' . WEB_ROOT . '/task');
-    exit;
+        header('Location:' . WEB_ROOT . '/task');
+        exit;
     }
 }
 ?>
