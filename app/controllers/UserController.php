@@ -54,20 +54,32 @@ class UserController extends ApplicationController
     public function deleteAction()
     {
         $this->sessionHelper->startSession();
-
         $userId = $_GET['id'] ?? 0;
+    
+        if (!$userId) {
+        header('Location: ' . WEB_ROOT . '/users');
+        exit;
+        }
+    
         $currentUser = $_SESSION['user'] ?? null;
         $isSelfDelete = $currentUser && ($userId == $currentUser['id']);
+    
+    // 1. Eliminar todas las tareas del usuario
+        require_once __DIR__ . '/../models/Task.php';
+        $taskModel = new Task();
+        $taskModel->deleteAllTasksByUserId($userId);
 
+    // 2. Eliminar el usuario
         $userModel = new User();
         $userModel->deleteUser($userId);
-
+    
+    // 3. Si el usuario eliminado es el actual, cerrar sesión
         if ($isSelfDelete) {
-            unset($_SESSION['logged_in']);
-            unset($_SESSION['user']);
-            header('Location: ' . WEB_ROOT . '/users');
+        unset($_SESSION['logged_in']);
+        unset($_SESSION['user']);
+        header('Location: ' . WEB_ROOT . '/auth/login');
         } else {
-            header('Location: ' . WEB_ROOT . '/users');
+        header('Location: ' . WEB_ROOT . '/users');
         }
         exit;
     }
