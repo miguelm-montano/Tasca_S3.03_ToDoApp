@@ -67,6 +67,21 @@ class Task {
         return false;
     }
 
+    public function deleteAllTasksByUserId($userId): bool {
+    // Filtrar las tareas: mantener solo las que NO pertenecen al usuario
+        $this->data['tasks'] = array_filter($this->data['tasks'], function($task) use ($userId) {
+        return $task['userId'] != $userId;
+        });
+    
+    // Re-indexar el array para mantener índices consecutivos
+        $this->data['tasks'] = array_values($this->data['tasks']);
+    
+    // Guardar los cambios
+        $this->storage->setData($this->data);
+    
+        return true;
+    }
+
     public function getTaskById($userId, $taskId) {
 
         foreach ($this->data['tasks'] as $task) {
