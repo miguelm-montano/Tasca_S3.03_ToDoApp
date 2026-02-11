@@ -53,8 +53,9 @@ class User
     {
         $stmt = $this->db->prepare("
             UPDATE users
-            SET name = :name;
+            SET name = :name,
                 surname = :surname,
+                username = :username,
                 email = :email
             WHERE id = :id 
             ");
@@ -77,7 +78,7 @@ class User
     public function deleteUser($userId): bool
     {
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
-        $stmt->execute(['id' => "userId"]);
+        $stmt->execute(['id' => "$userId"]);
         return $stmt->rowCount() > 0;
     }
 
