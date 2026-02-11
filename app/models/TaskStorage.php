@@ -36,7 +36,7 @@ class TaskStorage {
 
     public function setData($data) {
 
-         $this->data = $data;
+        $this->data = $data;
         $this->saveData();
     }
 }

@@ -6,8 +6,6 @@
 **To.Do List** is a project developed to put into practice the fundamental concepts learned during *Sprint 1* and *Sprint 2*, using the MVC (Model–View–Controller) architectural pattern.
 The development is based on an existing codebase originally created by another developer.
 
-For this reason, a significant amount of time was dedicated to understanding how the application is structured and why it works in its current way before implementing new features and improvements.
-
 The application simulates a user registration system, allowing each user to manage their daily tasks.
 
 ## Technologies Used
@@ -16,6 +14,8 @@ The application simulates a user registration system, allowing each user to mana
 * Tailwind
 * .JSON
 * MySQL
+
+The current branch uses **JSON files for persistence** (no database required).
 
 ## Features
 
@@ -36,12 +36,12 @@ Clone the repository
 https://github.com/miguelm-montano/Tasca_S3.03_ToDoApp.git
 ```
 
-From the terminal in develop branch:
+Start the PHP built-in server. From the project root, run:
 ```
 php -S localhost:8000 -t web 
 ```
 
-From your browser:
+Open in your browser:
 ```
 http://localhost:8000
 ```
@@ -60,3 +60,4 @@ Some features that could be implemented in future versions of the project includ
 * Improving task listing behavior so that completed tasks are automatically moved to the end of the list.
 * Allowing users to upload a profile picture for their account.
 * Implement task groups by type.
+* Add other organizational elements to the task window, such as a calendar, checklist, and notes.

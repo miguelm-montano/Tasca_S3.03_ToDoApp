@@ -12,7 +12,7 @@ class TaskController extends ApplicationController {
         $this->sessionHelper = new SessionHelper();
     }
 
-    public function indexAction() {
+    public function indexAction(): void {
 
         $this->sessionHelper->requireLogin();
 
@@ -24,30 +24,30 @@ class TaskController extends ApplicationController {
         $this->view->currentUser=$this->sessionHelper->getCurrentUser();
     }
 
-    public function newAction() {
+    public function newAction(): void {
+
         $this->sessionHelper->requireLogin();
-        //Para render de la vista
 
         $userId = $this->sessionHelper->getCurrentUserId();
     
-    // Verificar si estamos editando
-    $taskId = $_GET['id'] ?? null;
+        //verificar si es editar
+        $taskId = $_GET['id'] ?? null;
     
-    if ($taskId) {
-        // Modo edición
-        $taskModel = new Task();
-        $task = $taskModel->getTaskById($userId, $taskId);
+        if ($taskId) {
+        //modo edición
+            $taskModel = new Task();
+            $task = $taskModel->getTaskById($userId, $taskId);
         
-        if ($task) {
+            if ($task) {
             $this->view->task = $task;
-        } else {
-            header('Location:' . WEB_ROOT . '/task');
-            exit;
+            } else {
+                header('Location:' . WEB_ROOT . '/task');
+                exit;
             }
         }
     }
 
-    public function addTaskAction() {
+    public function addTaskAction(): void {
 
         $this->sessionHelper->requireLogin();
         $userId = $this->sessionHelper->getCurrentUserId();
@@ -82,7 +82,7 @@ class TaskController extends ApplicationController {
         exit;
     }
     
-    public function updateTaskAction() {
+    public function updateTaskAction(): void {
 
         $this->sessionHelper->requireLogin();
         $userId = $this->sessionHelper->getCurrentUserId();
@@ -99,7 +99,7 @@ class TaskController extends ApplicationController {
         exit;
     }
 
-    public function editTaskAction() {
+    public function editTaskAction(): void {
 
         $this->sessionHelper->requireLogin();
         $userId = $this->sessionHelper->getCurrentUserId();
@@ -122,7 +122,7 @@ class TaskController extends ApplicationController {
         $this->view->task = $task;
     }
 
-    public function updateTaskContentAction() {
+    public function updateTaskContentAction(): void {
 
         $this->sessionHelper->requireLogin();
         $userId = $this->sessionHelper->getCurrentUserId();
@@ -145,8 +145,6 @@ class TaskController extends ApplicationController {
 
         header('Location:' . WEB_ROOT . '/task');
         exit;
-}
-
-
+    }
 }
 ?>
