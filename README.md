@@ -6,51 +6,65 @@
 **To.Do List** is a project developed to put into practice the fundamental concepts learned during *Sprint 1* and *Sprint 2*, using the MVC (Model–View–Controller) architectural pattern.
 The development is based on an existing codebase originally created by another developer.
 
-For this reason, a significant amount of time was dedicated to understanding how the application is structured and why it works in its current way before implementing new features and improvements.
-
 The application simulates a user registration system, allowing each user to manage their daily tasks.
 
 ## Technologies Used
 
-* PHP
-* Tailwind
-* .JSON
+* PHP 8.0
+* Tailwind CSS
+* JSON
 * MySQL
 
 ## Features
 
-1. Create account
-2. Create daily tasks
-3. Mark tasks in progress
-4. Mark completed tasks
-5. Delete Tasks
-6. Edit tasks
-3. Dashboar
-    1. Redirect to previous user
+1. Create account (session simulation)
+2. Create, edit, delete daily tasks
+3. Mark tasks as in progress and completed
+4. Keep track of the number of tasks
+5. From your profile, edit your information.
+6. Have you already registered?
+    1. Go to your tasks
     2. Delete users
+
+![This is an alt text.](web/images/BannerFunctions.png "Banner Present")
 
 ## Setup
 
-Clone the repository
+* Clone the repository
 ```
 https://github.com/miguelm-montano/Tasca_S3.03_ToDoApp.git
+
+```
+* Create a database called for example *todolist* in XAMPP, MAMP, etc.
+
+* Import the database located in the config folder.
+
+* Create the configuration file from the template:
+
+```bash
+   cp database/config.example.php database/config.php
 ```
 
-From the terminal in develop branch:
+* Edit `database/config.php` with your credentials:
+
 ```
-php -S localhost:8000 -t web 
+   <?php
+   return [
+       'host' => 'localhost',
+       'dbname' => 'todolist',        // Name of your database
+       'username' => 'root',          // UMySQL user
+       'password' => ''               // Password (empty in XAMPP, ‘root’ in MAMP)
+   ];
 ```
 
-From your browser:
+From your browser go to:
 ```
-http://localhost:8000
+http://localhost/todolist-app/web/
 ```
 
 ## Project Status
 
 The project currently works with both JSON-based storage and a MySQL database. All core functionalities are fully implemented and the application meets the basic project requirements.
-
-**Currently, input fields do not have validation implemented.**
 
 ## Future Features
 
