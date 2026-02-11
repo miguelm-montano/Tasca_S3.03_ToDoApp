@@ -14,17 +14,19 @@ The application simulates a user registration system, allowing each user to mana
 * Tailwind
 * .JSON
 * MySQL
+* XAMP or MAMP
 
 The current branch uses **JSON files for persistence** (no database required).
 
 ## Features
 
-1. Create account
+1. Create account (User session simulation)
 2. Create daily tasks
 3. Mark tasks in progress
 4. Mark completed tasks
 5. Delete Tasks
 6. Edit tasks
+7. Edit profile
 3. Dashboar
     1. Redirect to previous user
     2. Delete users
