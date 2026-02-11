@@ -1,99 +1,110 @@
 <?php
-require_once __DIR__ . '/UserStorage.php';
+require_once ROOT_PATH . '/database/connection.php';
 
 class User
 {
-    private $storage;    
-    private $data;       
+    private PDO $db;      
 
     public function __construct()
     {
-        $this->storage = new UserStorage();
-        $this->data = $this->storage->getData();
+        $this->db = getConnection();
     }
 
     public function getAllUsers(): array
     {
-        return $this->data['users'] ?? [];
+        $stmt = $this->db->query("SELECT * FROM users ORDER BY id DESC");
+        return $stmt->fetchAll();
     }
 
     public function getUserById($userId): ?array
     {
-        foreach ($this->data['users'] as $user) {
-            if ($user['id'] == $userId) {
-                return $user;
-            }
-        }
-        return null;
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute(['id' => $userId]);
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     public function addUser($name, $surname, $username, $email): array
     {
-        $newUser = [
-            'id' => time(),                          
-            'name' => $name,                         
+        $stmt = $this->db->prepare("
+            INSERT INTO users (name, surname, username, email)
+            VALUES (:name, :surname, :username, :email)
+        ");
+
+        $stmt->execute([
+            'name' => $name,
             'surname' => $surname,
             'username' => $username,
-            'email' => $email,                       
-            'created_at' => date('Y-m-d H:i:s')      
+            'email' => $email
+        ]);
+        
+        $newId = $this->db->lastInsertId();
+        
+        return [
+            'id' => $newId,
+            'name' => $name,
+            'surname' => $surname,
+            'username' => $username,
+            'email' => $email
         ];
-
-        $this->data['users'][] = $newUser;
-        $this->storage->setData($this->data);
-
-        return $newUser;
     }
 
     public function updateUser($userId, $name, $surname, $username, $email): ?array
     {
-        foreach ($this->data['users'] as $index => $user) {
-            if ($user['id'] == $userId) {
-                $this->data['users'][$index]['name'] = $name;
-                $this->data['users'][$index]['surname'] = $surname;
-                $this->data['users'][$index]['username'] = $username;
-                $this->data['users'][$index]['email'] = $email;
-                $this->data['users'][$index]['updated_at'] = date('Y-m-d H:i:s');
-                
-                $this->storage->setData($this->data);
-                return $this->data['users'][$index];
-            }
+        $stmt = $this->db->prepare("
+            UPDATE users
+            SET name = :name;
+                surname = :surname,
+                email = :email
+            WHERE id = :id 
+            ");
+
+        $stmt->execute([
+            'name' => $name,
+            'surname' => $surname,
+            'username' => $username,
+            'email' => $email,
+            'id' => $userId
+        ]);
+
+        if ($stmt->rowCount() > 0) {
+            return $this->getUserById($userId);
         }
+
         return null;
     }
 
     public function deleteUser($userId): bool
     {
-        foreach ($this->data['users'] as $index => $user) {
-            if ($user['id'] == $userId) {
-                array_splice($this->data['users'], $index, 1); // Elimina y re indexa
-                
-                $this->storage->setData($this->data);
-
-                return true;
-            }
-        }
-        return false;
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+        $stmt->execute(['id' => "userId"]);
+        return $stmt->rowCount() > 0;
     }
 
     public function findUserByCredentials($name, $surname, $username, $email): ?array
     {
-        foreach ($this->data['users'] as $user) {
-            if (
-                $user['name'] == $name &&
-                $user['surname'] == $surname &&
-                $user['username'] == $username &&
-                $user['email'] == $email
-            ) {
-                return $user;
-            }
-        }
-        return null;
+        $stmt = $this->db->prepare("
+            SELECT * FROM users 
+            WHERE name = :name 
+            AND surname = :surname 
+            AND username = :username 
+            AND email = :email
+            ");
+
+        $stmt->execute([
+            'name' => $name,
+            'surname' => $surname,
+            'username' => $username,
+            'email' => $email
+        ]);
+
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     public function deleteAllUsers(): bool
     {
-        $this->data['users'] = [];
-        $this->storage->setData($this->data);
+        $stmt = $this->db->query("DELETE FROM users");
         return true;
     }
 }
