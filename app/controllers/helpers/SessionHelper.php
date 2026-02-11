@@ -18,12 +18,17 @@ class SessionHelper {
     public function getCurrentUserId() {
 
         $this->startSession();
-
-        if($this->isLoggedIn() && isset($_SESSION['user']['id'])) {
-            return (int) $_SESSION['user']['id'];
-        }
-
-        return null;
+    
+    // ⚠️ TEMPORAL: Forzar userId = 1 hasta que User.php esté migrado a MySQL
+    // TODO: Restaurar el código comentado cuando tu compañero termine User.php
+    return 1;
+    
+    /* CÓDIGO ORIGINAL (restaurar después):
+    if($this->isLoggedIn() && isset($_SESSION['user']['id'])) {
+        return (int) $_SESSION['user']['id'];
+    }
+    return null;
+    */
     }
 
     public function getCurrentUser() {

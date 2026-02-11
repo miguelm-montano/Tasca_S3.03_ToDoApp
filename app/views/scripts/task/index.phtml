@@ -10,10 +10,10 @@ foreach ($tasks as $task) {
         case 'pending':
             $pending++;
             break;
-        case 'in_progress':
+        case 'on_process':
             $inProgress++;
             break;
-        case 'completed':
+        case 'finished':
             $completed++;
             break;
     }
@@ -49,7 +49,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                 <div class="absolute right-0 mt-2 w-40 bg-white border border-neutral-200
                     rounded-lg shadow-md overflow-hidden z-10">
 
-                    <a href="/profile/edit" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
+                    <a href="<?php echo WEB_ROOT; ?>/profile/edit" class="flex items-center gap-1 block px-4 py-2 text-sm font-['Baloo_2',_serif]
                         hover:bg-neutral-100 transition">
                         <img width="20" height="20" src="https://img.icons8.com/badges/48/name.png" alt="name"/>
                         Edit profile
@@ -94,7 +94,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
         <!-- Add task -->
         <div class="mt-4">
-            <a href="/task/new" class="block text-center bg-neutral-950 text-white font-['Holtwood_One_SC',_serif]
+            <a href="<?php echo WEB_ROOT; ?>/task/new" class="block text-center bg-neutral-950 text-white font-['Holtwood_One_SC',_serif]
             px-5 py-2.5 rounded-xl hover:bg-neutral-500 transition">
                 Add task
             </a>
@@ -108,7 +108,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                         <li class="flex items-center gap-2 py-1.5">
 
                         <!-- Task and line -->
-                         <?php $isCompleted = $task['status'] === 'completed'; ?>
+                         <?php $isCompleted = $task['status'] === 'finished'; ?>
                         <div class="flex-1 border-b-2 border-black pb-1">
                             <span class="font-['Baloo_2',_serif] text-base <?= $isCompleted ? 'line-through text-neutral-400' : '' ?>">
                             <?php echo htmlspecialchars($task['title']); ?>
@@ -116,9 +116,9 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                         </div>
                         
                         <!-- On work -->
-                        <?php $isInProgress = $task['status'] === 'in_progress';
-                        $newStatus = $isInProgress ? 'pending' : 'in_progress';?>
-                        <form action="/task/update" method="POST" style="display:inline;">
+                        <?php $isInProgress = $task['status'] === 'on_process';
+                        $newStatus = $isInProgress ? 'pending' : 'on_process';?>
+                        <form action="<?php echo WEB_ROOT; ?>/task/update" method="POST" style="display:inline;">
                             <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
                             <input type="hidden" name="status" value="<?= $newStatus ?>">
                             <button type="submit" title="On process" class="font-['Baloo_2',_serif] text-black border border-neutral-800
@@ -130,9 +130,9 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
                         <!-- Complete Task -->
                         <div class="flex items-center gap-2">
-                            <form action="/task/update" method="POST" style="display:inline;">
+                            <form action="<?php echo WEB_ROOT; ?>/task/update" method="POST" style="display:inline;">
                             <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
-                            <input type="hidden" name="status" value="completed">
+                            <input type="hidden" name="status" value="finished">
                             <button type="submit" title="Completed" class="flex items-center justify-center hover:text-green-600 transition 
                             <?= $isCompleted ? 'text-green-600' : 'hover:text-green-600' ?>">
                                 <svg width="24" height="24" fill="currentColor">
@@ -143,7 +143,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
                         <!-- Edit task -->
 
-                        <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit"
+                        <a href="<?php echo WEB_ROOT; ?>/task/edit?id=<?php echo $task['id']; ?>" title="Edit"
                         class="flex items-center justify-center hover:text-orange-400 transition">
                                 <svg width="24" height="24" fill="currentColor">
                                     <use href="#edit-icon"></use>
@@ -152,7 +152,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
                         <!-- Delete task -->
 
-                        <form action="/task/delete" method="POST" style="display:inline;">
+                        <form action="<?php echo WEB_ROOT; ?>/task/delete" method="POST" style="display:inline;">
                             <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
                             <button class="flex items-center justify-center hover:text-red-600 transition" type="submit" title="Delete"
                             onclick="return confirm('Are you sure you want to delete this task?');">

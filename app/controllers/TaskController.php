@@ -30,19 +30,19 @@ class TaskController extends ApplicationController {
 
         $userId = $this->sessionHelper->getCurrentUserId();
     
-    // Verificar si estamos editando
-    $taskId = $_GET['id'] ?? null;
+        // Verificar si estamos editando
+        $taskId = $_GET['id'] ?? null;
     
-    if ($taskId) {
+        if ($taskId) {
         // Modo edición
-        $taskModel = new Task();
-        $task = $taskModel->getTaskById($userId, $taskId);
+            $taskModel = new Task();
+            $task = $taskModel->getTaskById($userId, $taskId);
         
-        if ($task) {
-            $this->view->task = $task;
-        } else {
-            header('Location:' . WEB_ROOT . '/task');
-            exit;
+            if ($task) {
+                $this->view->task = $task;
+            } else {
+                header('Location:' . WEB_ROOT . '/task');
+                exit;
             }
         }
     }
@@ -54,8 +54,8 @@ class TaskController extends ApplicationController {
 
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $createdAt = $_POST['created_at'] ?? null;
-        $dueDate = $_POST['due_date'] ?? null;
+        $createdAt = $_POST['created_at'] ?? date('Y-m-d');
+        $dueDate = !empty($_POST['due_date']) ? $_POST['due_date'] : null;
 
         if(!empty($title)) {
             $taskModel = new Task();
@@ -130,23 +130,15 @@ class TaskController extends ApplicationController {
         $taskId = $_POST['task_id'] ?? null;
         $title = trim($_POST['title'] ?? '');
         $description = trim($_POST['description'] ?? '');
-        $dueDate = $_POST['due_date'] ?? null;
+        $dueDate = !empty($_POST['due_date']) ? $_POST['due_date'] : null;
 
-    if ($taskId && $title) {
-
+        if ($taskId && $title) {
             $taskModel = new Task();
-            $taskModel->updateTaskContent(
-            $userId,
-            $taskId,
-            $title,
-            $description ?: null,
-            $dueDate);
+            $taskModel->updateTaskContent($userId, $taskId, $title, $description ?: null, $dueDate);
         }
 
         header('Location:' . WEB_ROOT . '/task');
         exit;
-}
-
-
+    }
 }
 ?>

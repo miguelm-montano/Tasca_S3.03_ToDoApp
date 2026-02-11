@@ -1,12 +1,26 @@
 <?php
 $task = $this->task ?? null;
 $isEdit = $task !== null;
+
+$createdDate = '';
+$dueDate = '';
+
+if ($isEdit && $task) {
+    // Convertir datetime a solo fecha para el input type="date"
+    if (!empty($task['created_at'])) {
+        $createdDate = substr($task['created_at'], 0, 10); // Toma solo YYYY-MM-DD
+    }
+    if (!empty($task['due_date'])) {
+        $dueDate = substr($task['due_date'], 0, 10); // Toma solo YYYY-MM-DD
+    }
+}   
 ?>
 
 <body class="bg-gray-200">
     <div class="min-h-screen flex items-center justify-center">
         <div class="bg-gray-50 max-w-4xl w-[30%] min-h-[64vh] rounded-2xl shadow-[10px_10px_0_0_#000] p-8">
-            <form method="POST" action="<?php echo $isEdit ? '/task/update-content' : '/task/add'; ?>">
+            <form method="POST" action="<?php echo WEB_ROOT . ($isEdit ? '/task/update-content' : '/task/add'); ?>">
+
 
             <?php if ($isEdit): ?>
                 <input type="hidden" name="task_id" value="<?php echo $task['id']; ?>">
@@ -118,8 +132,7 @@ $isEdit = $task !== null;
         <?php echo $isEdit ? 'Update task' : 'Save task'; ?>
     </button>
 
-    <a
-        href="/task"
+    <a href="<?php echo WEB_ROOT; ?>/task"
         class="w-full text-center bg-neutral-300 text-black
                font-['Holtwood_One_SC',_serif]
                px-5 py-2.5 rounded-xl
