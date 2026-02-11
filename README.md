@@ -10,9 +10,9 @@ The application simulates a user registration system, allowing each user to mana
 
 ## Technologies Used
 
-* PHP
-* Tailwind
-* .JSON
+* PHP 8.0
+* Tailwind CSS
+* JSON
 * MySQL
 * XAMP or MAMP
 
@@ -20,16 +20,16 @@ The current branch uses **JSON files for persistence** (no database required).
 
 ## Features
 
-1. Create account (User session simulation)
-2. Create daily tasks
-3. Mark tasks in progress
-4. Mark completed tasks
-5. Delete Tasks
-6. Edit tasks
-7. Edit profile
-3. Dashboar
-    1. Redirect to previous user
+1. Create account (session simulation)
+2. Create, edit, delete daily tasks
+3. Mark tasks as in progress and completed
+4. Keep track of the number of tasks
+5. From your profile, edit your information.
+6. Have you already registered?
+    1. Go to your tasks
     2. Delete users
+
+![This is an alt text.](web/images/BannerFunctions.png "Banner Present")
 
 ## Setup
 
@@ -52,8 +52,6 @@ http://localhost:8000
 
 The project currently works with both JSON-based storage and a MySQL database. All core functionalities are fully implemented and the application meets the basic project requirements.
 
-**Currently, input fields do not have validation implemented.**
-
 ## Future Features
 
 Some features that could be implemented in future versions of the project include:
@@ -62,4 +60,3 @@ Some features that could be implemented in future versions of the project includ
 * Improving task listing behavior so that completed tasks are automatically moved to the end of the list.
 * Allowing users to upload a profile picture for their account.
 * Implement task groups by type.
-* Add other organizational elements to the task window, such as a calendar, checklist, and notes.
