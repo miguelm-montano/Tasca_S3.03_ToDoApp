@@ -3,8 +3,8 @@ require_once __DIR__ . '/JsonStorage.php';
 
 class User
 {
-    private $storage;    
-    private $data;       
+    private $storage;
+    private $data;
 
     public function __construct()
     {
@@ -30,12 +30,12 @@ class User
     public function addUser($name, $surname, $username, $email): array
     {
         $newUser = [
-            'id' => time(),                          
-            'name' => $name,                         
+            'id' => time(),
+            'name' => $name,
             'surname' => $surname,
             'username' => $username,
-            'email' => $email,                       
-            'created_at' => date('Y-m-d H:i:s')      
+            'email' => $email,
+            'created_at' => date('Y-m-d H:i:s')
         ];
 
         $this->data['users'][] = $newUser;
@@ -65,10 +65,8 @@ class User
     {
         foreach ($this->data['users'] as $index => $user) {
             if ($user['id'] == $userId) {
-                array_splice($this->data['users'], $index, 1); // Elimina y re indexa
-                
+                array_splice($this->data['users'], $index, 1); 
                 $this->storage->setData($this->data);
-
                 return true;
             }
         }

@@ -16,7 +16,6 @@ $routes = array(
 
 	// auth
 	'/' => 'auth#login',
-	'/auth/register' => 'auth#register',
 	'/auth/logout' => 'auth#logout',
 
 	// tasks
