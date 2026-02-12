@@ -1,100 +1,112 @@
 <?php
 
+require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/helpers/SessionHelper.php';
 
-class AuthController extends ApplicationController 
+class UserController extends ApplicationController 
 {
 
     private $sessionHelper;
 
-    public function __construct() {
-    
+    public function __construct() 
+    {
         $this->sessionHelper = new SessionHelper();
     }
 
-    public function loginAction() {
+    public function indexAction() 
+    {
+        $this->sessionHelper->startSession();
 
-        /*if ($this->sessionHelper->isLoggedIn()) {
-        header('Location: ' . WEB_ROOT . '/task');
-        exit;
-        }*/
+        $userModel = new User();
+        $this->view->users = $userModel->getAllUsers();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if ($this->sessionHelper->isLoggedIn()) {
+            $this->view->currentUser = $this->sessionHelper->getCurrentUser();
+            $this->view->canEdit = true;
+        } else {
+            $this->view->currentUser = null;
+            $this->view->canEdit = true;
+        }
+    }
 
-        $name = trim($_POST['name'] ?? '');
-        $surname = trim($_POST['surname'] ?? '');
-        $username = trim($_POST['username'] ?? '');
-        $email = trim($_POST['email'] ?? '');
-
-        if ($name && $surname && $username && $email) {
-
-            $userModel = new User();
-
-            $user = $userModel->findUserByCredentials(
-                $name,
-                $surname,
-                $username,
-                $email
-            );
-
-            if (!$user) {
-                $user = $userModel->addUser(
-                    $name,
-                    $surname,
-                    $username,
-                    $email
-                );
-            }
-
+     public function loginAsAction()
+    {
+    $this->sessionHelper->startSession();
+    
+    $userId = $_GET['id'] ?? 0;
+    
+    if ($userId > 0) {
+        $userModel = new User();
+        $user = $userModel->getUserById($userId);
+        
+        if ($user) {
             $this->sessionHelper->setUser($user);
-
             header('Location: ' . WEB_ROOT . '/task');
             exit;
         }
     }
-    /*// formulario
-    $this->view->render('auth/login.phtml');*/
-}
     
+    // Si no encuentra el usuario, vuelve a la lista de usuarios
+    header('Location: ' . WEB_ROOT . '/users');
+    exit;
+    }
 
-    public function registerAction() {
-        
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = trim($_POST['name'] ?? '');
-            $surname = trim($_POST['surname'] ?? '');
-            $username = trim($_POST['username'] ?? '');
-            $email = trim($_POST['email'] ?? '');
-
-        // Validar que todos los campos estén completos
-        if (empty($name) || empty($surname) || empty($username) || empty($email)) {
-            header('Location: ' . WEB_ROOT . '/?error=empty_fields');
-            exit;
+    public function deleteAction()
+    {
+        $this->sessionHelper->startSession();
+        $userId = $_GET['id'] ?? 0;
+    
+        if (!$userId) {
+        header('Location: ' . WEB_ROOT . '/users');
+        exit;
         }
+    
+        $currentUser = $_SESSION['user'] ?? null;
+        $isSelfDelete = $currentUser && ($userId == $currentUser['id']);
+    
+    // 1. Eliminar todas las tareas del usuario
+        require_once __DIR__ . '/../models/Task.php';
+        $taskModel = new Task();
+        $taskModel->deleteAllTasksByUserId($userId);
 
+    // 2. Eliminar el usuario
         $userModel = new User();
-        // Intentar encontrar el usuario
-        $user = $userModel->findUserByCredentials($name, $surname, $username, $email);
-        if ($user) {
-        // Usuario ya existe - iniciar sesión con ese usuario
-            $this->sessionHelper->setUser($user);
+        $userModel->deleteUser($userId);
+    
+    // 3. Si el usuario eliminado es el actual, cerrar sesión
+        if ($isSelfDelete) {
+        unset($_SESSION['logged_in']);
+        unset($_SESSION['user']);
+        header('Location: ' . WEB_ROOT . '/auth/login');
         } else {
-        // Usuario NO existe - crear nuevo y iniciar sesión
-            $newUser = $userModel->addUser($name, $surname, $username, $email);
-            $this->sessionHelper->setUser($newUser);
+        header('Location: ' . WEB_ROOT . '/users');
         }
-        // Redirigir a SUS tareas
+        exit;
+    }
+
+    public function editProfileAction()
+{
+    $this->sessionHelper->requireLogin();
+    $currentUser = $this->sessionHelper->getCurrentUser();
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $currentUser['id'];
+        $name = $_POST['name'] ?? '';
+        $surname = $_POST['surname'] ?? '';
+        $username = $_POST['username'] ?? '';
+        $email = $_POST['email'] ?? '';
+        
+        $userModel = new User();
+        $updatedUser = $userModel->updateUser($id, $name, $surname, $username, $email);
+        
+        // Actualizar la sesión con los nuevos datos
+        $this->sessionHelper->setUser($updatedUser);
+        
         header('Location: ' . WEB_ROOT . '/task');
         exit;
     }
-        // Si no es POST, redirigir al inicio
-        header('Location: ' . WEB_ROOT . '/');
-        exit;
-    }
+    
+    $this->view->user = $currentUser;
+}
 
-    public function logoutAction() {
-
-        $this->sessionHelper->destroySession();
-        header('Location: ' . WEB_ROOT . '/');
-        exit;   
-    }
 }
