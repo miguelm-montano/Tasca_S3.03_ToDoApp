@@ -17,16 +17,7 @@ class AuthController extends ApplicationController
             $this->authenticate($_POST);
         }
     }
-
-    public function registerAction() 
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->authenticate($_POST);
-        }
-        header('Location: ' . WEB_ROOT . '/');
-        exit;
-    }
-
+    
     private function authenticate($data) 
     {
         $name = trim($_POST['name'] ?? '');
