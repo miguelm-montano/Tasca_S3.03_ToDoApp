@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/TaskStorage.php';
+require_once __DIR__ . '/JsonStorage.php';
 
 class Task {
 
@@ -9,7 +9,7 @@ class Task {
 
     public function __construct() {
 
-        $this->storage = new TaskStorage();
+        $this->storage = new JsonStorage();
         $this->data = $this->storage->getData();
     }
 
