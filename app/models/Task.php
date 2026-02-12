@@ -25,7 +25,7 @@ class Task {
         return $tasks;
     }
 
-    public function addTask($userId, $title, ?string $description, ?string $createdAt, ?string $dueDate): array {
+    public function addTask($userId, $title, ?string $description, string $createdAt, ?string $dueDate): array {
 
         $newTask = [
             'id' => time(),
@@ -99,11 +99,11 @@ class Task {
                 $this->data['tasks'][$index]['due_date'] = $dueDate;
                 $this->storage->setData($this->data);
                 return true;
+            }
         }
-    }
     
-    return false;
-}
+        return false;
+    }
 
 }
 ?>

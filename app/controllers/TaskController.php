@@ -132,7 +132,7 @@ class TaskController extends ApplicationController {
         $description = trim($_POST['description'] ?? '');
         $dueDate = $_POST['due_date'] ?? null;
 
-    if ($taskId && $title) {
+        if ($taskId && $title) {
 
             $taskModel = new Task();
             $taskModel->updateTaskContent(
