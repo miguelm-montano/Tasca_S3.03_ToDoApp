@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/TaskStorage.php';
+require_once __DIR__ . '/JsonStorage.php';
 
 class Task {
 
@@ -9,7 +9,7 @@ class Task {
 
     public function __construct() {
 
-        $this->storage = new TaskStorage();
+        $this->storage = new JsonStorage();
         $this->data = $this->storage->getData();
     }
 
@@ -25,7 +25,7 @@ class Task {
         return $tasks;
     }
 
-    public function addTask($userId, $title, ?string $description, ?string $createdAt, ?string $dueDate): array {
+    public function addTask($userId, $title, ?string $description, string $createdAt, ?string $dueDate): array {
 
         $newTask = [
             'id' => time(),
@@ -99,11 +99,11 @@ class Task {
                 $this->data['tasks'][$index]['due_date'] = $dueDate;
                 $this->storage->setData($this->data);
                 return true;
+            }
         }
-    }
     
-    return false;
-}
+        return false;
+    }
 
 }
 ?>

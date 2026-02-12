@@ -108,7 +108,7 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                         <li class="flex items-center gap-2 py-1.5">
 
                         <!-- Task and line -->
-                         <?php $isCompleted = $task['status'] === 'completed'; ?>
+                        <?php $isCompleted = $task['status'] === 'completed'; ?>
                         <div class="flex-1 border-b-2 border-black pb-1">
                             <span class="font-['Baloo_2',_serif] text-base <?= $isCompleted ? 'line-through text-neutral-400' : '' ?>">
                             <?php echo htmlspecialchars($task['title']); ?>
@@ -145,9 +145,9 @@ $username = $this->currentUser['username'] ?? 'Usuario';
 
                         <a href="/task/edit?id=<?php echo $task['id']; ?>" title="Edit"
                         class="flex items-center justify-center hover:text-orange-400 transition">
-                                <svg width="24" height="24" fill="currentColor">
-                                    <use href="#edit-icon"></use>
-                                </svg>
+                            <svg width="24" height="24" fill="currentColor">
+                                <use href="#edit-icon"></use>
+                            </svg>
                         </a>
 
                         <!-- Delete task -->
@@ -167,23 +167,17 @@ $username = $this->currentUser['username'] ?? 'Usuario';
                 </ul>
             <?php else: ?>
                 <div class="absolute inset-0 flex items-center justify-start p-6">
-        <div class="flex items-center ">
+                    <div class="flex items-center ">
             
-            <!-- Imagen -->
-            <img 
-                src="<?= WEB_ROOT ?>/images/MiniGref.png" 
-                alt="No tasks"
-                class="w-44 opacity-30 ml-0"
-            >
+                        <!-- Imagen -->
+                        <img src="<?= WEB_ROOT ?>/images/MiniGref.png" alt="No tasks" class="w-44 opacity-30 ml-0">
 
-            <!-- Texto -->
-            <p class="font-['Baloo_2',_serif] text-neutral-200 text-left text-2xl leading-tight font-bold">
-                Your tasks will appear here.
-            </p>
-
-        </div>
-    </div>
-
+                        <!-- Texto -->
+                        <p class="font-['Baloo_2',_serif] text-neutral-200 text-left text-2xl leading-tight font-bold">
+                            Your tasks will appear here.
+                        </p>
+                    </div>
+                </div>
             <?php endif; ?>
         </div>
 
