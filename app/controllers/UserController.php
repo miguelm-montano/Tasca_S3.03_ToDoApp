@@ -1,112 +1,107 @@
 <?php
-
+require_once __DIR__ . '/../models/Task.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/helpers/SessionHelper.php';
 
 class UserController extends ApplicationController 
 {
-
     private $sessionHelper;
+    private $userModel;
+    private $taskModel;
 
     public function __construct() 
     {
         $this->sessionHelper = new SessionHelper();
+        $this->userModel = new User();
+        $this->taskModel = new Task();
+        $this->sessionHelper->startSession();
     }
 
     public function indexAction() 
     {
-        $this->sessionHelper->startSession();
-
-        $userModel = new User();
-        $this->view->users = $userModel->getAllUsers();
+        $this->view->users = $this->userModel->getAllUsers();
 
         if ($this->sessionHelper->isLoggedIn()) {
             $this->view->currentUser = $this->sessionHelper->getCurrentUser();
-            $this->view->canEdit = true;
         } else {
             $this->view->currentUser = null;
-            $this->view->canEdit = true;
         }
+        
+        $this->view->canEdit = true;
     }
 
-     public function loginAsAction()
+    public function loginAsAction()
     {
-    $this->sessionHelper->startSession();
+        $userId = $this->getIdFromRequest();
     
-    $userId = $_GET['id'] ?? 0;
-    
-    if ($userId > 0) {
-        $userModel = new User();
-        $user = $userModel->getUserById($userId);
+        if ($userId > 0) {
+            $user = $this->userModel->getUserById($userId);
         
-        if ($user) {
-            $this->sessionHelper->setUser($user);
-            header('Location: ' . WEB_ROOT . '/task');
-            exit;
+            if ($user) {
+                $this->sessionHelper->setUser($user);
+                $this->redirectTo('/task');
+            }
         }
-    }
-    
-    // Si no encuentra el usuario, vuelve a la lista de usuarios
-    header('Location: ' . WEB_ROOT . '/users');
-    exit;
+
+        $this->redirectTo('/users');
     }
 
     public function deleteAction()
     {
-        $this->sessionHelper->startSession();
-        $userId = $_GET['id'] ?? 0;
+        $userId = $this->getIdFromRequest();
     
         if (!$userId) {
-        header('Location: ' . WEB_ROOT . '/users');
-        exit;
+            $this->redirectTo('/users');
         }
     
-        $currentUser = $_SESSION['user'] ?? null;
+        $currentUser = $this->sessionHelper->getCurrentUser();
         $isSelfDelete = $currentUser && ($userId == $currentUser['id']);
     
-    // 1. Eliminar todas las tareas del usuario
-        require_once __DIR__ . '/../models/Task.php';
-        $taskModel = new Task();
-        $taskModel->deleteAllTasksByUserId($userId);
-
-    // 2. Eliminar el usuario
-        $userModel = new User();
-        $userModel->deleteUser($userId);
+        $this->taskModel->deleteAllTasksByUserId($userId);
+        $this->userModel->deleteUser($userId);
     
-    // 3. Si el usuario eliminado es el actual, cerrar sesión
         if ($isSelfDelete) {
-        unset($_SESSION['logged_in']);
-        unset($_SESSION['user']);
-        header('Location: ' . WEB_ROOT . '/auth/login');
+            unset($_SESSION['logged_in']);
+            unset($_SESSION['user']);
+            $this->redirectTo('/auth/login');
         } else {
-        header('Location: ' . WEB_ROOT . '/users');
+            $this->redirectTo('/users');
         }
-        exit;
     }
 
     public function editProfileAction()
-{
-    $this->sessionHelper->requireLogin();
-    $currentUser = $this->sessionHelper->getCurrentUser();
+    {
+        $this->sessionHelper->requireLogin();
+        $currentUser = $this->sessionHelper->getCurrentUser();
     
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $id = $currentUser['id'];
-        $name = $_POST['name'] ?? '';
-        $surname = $_POST['surname'] ?? '';
-        $username = $_POST['username'] ?? '';
-        $email = $_POST['email'] ?? '';
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $currentUser['id'];
+            $name = $_POST['name'] ?? '';
+            $surname = $_POST['surname'] ?? '';
+            $username = $_POST['username'] ?? '';
+            $email = $_POST['email'] ?? '';
         
-        $userModel = new User();
-        $updatedUser = $userModel->updateUser($id, $name, $surname, $username, $email);
+            $updatedUser = $this->userModel->updateUser($id, $name, $surname, $username, $email);
+            $this->sessionHelper->setUser($updatedUser);
         
-        // Actualizar la sesión con los nuevos datos
-        $this->sessionHelper->setUser($updatedUser);
-        
-        header('Location: ' . WEB_ROOT . '/task');
+            $this->redirectTo('/task');
+        }
+
+        $this->view->user = $currentUser;
+    }
+
+    // ===============
+    // PRIVATE METHODS
+    // ===============
+    
+    private function getIdFromRequest()
+    {
+        return $_GET['id'] ?? 0;
+    }
+
+    private function redirectTo($path)
+    {
+        header('Location: ' . WEB_ROOT . $path);
         exit;
     }
-    
-    $this->view->user = $currentUser;
-}
-
 }
