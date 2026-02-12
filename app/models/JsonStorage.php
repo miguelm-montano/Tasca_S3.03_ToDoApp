@@ -1,6 +1,6 @@
 <?php
 
-class TaskStorage {
+class JsonStorage {
 
     private $filePath;
     private $data;
@@ -21,6 +21,7 @@ class TaskStorage {
             }
         } else {
             $this->data = ['users' => [], 'tasks' => []];
+            $this->saveData();
         }
     }
 

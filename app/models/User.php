@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/UserStorage.php';
+require_once __DIR__ . '/JsonStorage.php';
 
 class User
 {
@@ -8,7 +8,7 @@ class User
 
     public function __construct()
     {
-        $this->storage = new UserStorage();
+        $this->storage = new JsonStorage();
         $this->data = $this->storage->getData();
     }
 
