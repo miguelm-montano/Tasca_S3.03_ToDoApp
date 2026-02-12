@@ -16,9 +16,11 @@ class UserStorage
         if (file_exists($this->filePath)) {
             $json = file_get_contents($this->filePath);
             $this->data = json_decode($json, true);
+            
             if (!$this->data || !isset($this->data['users'])) {
                 $this->data = ['users' => []];
             }
+
         } else {
             $this->data = ['users' => []];
             $this->saveData();
