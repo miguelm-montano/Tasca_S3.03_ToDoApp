@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/helpers/SessionHelper.php';
 
@@ -45,7 +44,7 @@ class UserController extends ApplicationController
             }
         }
     
-        // Si no encuentra el usuario, vuelve a la lista de usuarios
+        // If there is no user found, it wredirects to the users list
         header('Location: ' . WEB_ROOT . '/users');
         exit;
         }
@@ -63,16 +62,16 @@ class UserController extends ApplicationController
         $currentUser = $_SESSION['user'] ?? null;
         $isSelfDelete = $currentUser && ($userId == $currentUser['id']);
     
-        // 1. Eliminar todas las tareas del usuario
+        // Delete all task from User
         require_once __DIR__ . '/../models/Task.php';
         $taskModel = new Task();
         $taskModel->deleteAllTasksByUserId($userId);
 
-        // 2. Eliminar el usuario
+        // Delete User
         $userModel = new User();
         $userModel->deleteUser($userId);
     
-        // 3. Si el usuario eliminado es el actual, cerrar sesión
+        // Close session if the deletion is the actual using User
         if ($isSelfDelete) {
             unset($_SESSION['logged_in']);
             unset($_SESSION['user']);
@@ -98,7 +97,7 @@ class UserController extends ApplicationController
             $userModel = new User();
             $updatedUser = $userModel->updateUser($id, $name, $surname, $username, $email);
         
-            // Actualizar la sesión con los nuevos datos
+            // Update session with new data
             $this->sessionHelper->setUser($updatedUser);
 
             header('Location: ' . WEB_ROOT . '/task');
