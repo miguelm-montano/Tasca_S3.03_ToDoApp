@@ -61,6 +61,34 @@ class Task {
         ];
     }
 
+    public function getTaskStats($userId) {
+
+        $tasks = $this->getAllTasks($userId);
+    
+        $stats = [
+            'total' => count($tasks),
+            'pending' => 0,
+            'in_progress' => 0,
+            'completed' => 0
+        ];
+    
+        foreach ($tasks as $task) {
+            switch ($task['status']) {
+                case 'pending':
+                    $stats['pending']++;
+                    break;
+                case 'in_progress':
+                    $stats['in_progress']++;
+                    break;
+                case 'completed':
+                    $stats['completed']++;
+                    break;
+            }
+        }
+    
+        return $stats;
+    }
+
     public function updateTask($userId, $taskId, $newStatus): array | null {
 
         $stmt = $this->db->prepare("
