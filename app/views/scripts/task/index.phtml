@@ -1,28 +1,7 @@
 <?php
-$tasks = $this->tasks ?? [];
-
-$pending = 0;
-$inProgress = 0;
-$completed = 0;
-
-foreach ($tasks as $task) {
-    switch ($task['status']) {
-        case 'pending':
-            $pending++;
-            break;
-        case 'in_progress':
-            $inProgress++;
-            break;
-        case 'completed':
-            $completed++;
-            break;
-    }
-}
-
-$total = count($tasks);
-
-
 $username = $this->currentUser['username'] ?? 'Usuario';
+
+$tasks = $this->tasks ?? [];
 ?>
 
 <body class="bg-gray-200">
@@ -73,22 +52,22 @@ $username = $this->currentUser['username'] ?? 'Usuario';
         <div class="grid grid-cols-2 gap-4 flex items-center justify-center mt-2">
             <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
                 <p class="font-['Holtwood_One_SC',_serif] text-white ">Total</p>
-                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $total; ?></p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $this->totalTasks; ?></p>
             </div>
 
             <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
                 <p class="font-['Holtwood_One_SC',_serif] text-white ">Pending</p>
-                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $pending; ?></p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $this->pendingCount; ?></p>
             </div>
 
             <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
                 <p class="font-['Holtwood_One_SC',_serif] text-white ">On process</p>
-                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $inProgress; ?></p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $this->inProgressCount; ?></p>
             </div>
 
             <div class="bg-neutral-950 rounded-xl p-2.5 flex flex-col">
                 <p class="font-['Holtwood_One_SC',_serif] text-white ">Completed</p>
-                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $completed; ?></p>
+                <p class="font-['Holtwood_One_SC',_serif] text-white text-3xl self-end"><?php echo $this->completedCount; ?></p>
             </div>
         </div>
 
