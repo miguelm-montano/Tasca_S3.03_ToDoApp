@@ -13,15 +13,24 @@ class TaskController extends ApplicationController {
     }
 
     public function indexAction(): void {
-
+        
         $this->sessionHelper->requireLogin();
-
         $userId = $this->sessionHelper->getCurrentUserId();
-
+    
         $taskModel = new Task();
-        $this->view->tasks = $taskModel->getAllTasks($userId);
+    
+        $tasks = $taskModel->getAllTasks($userId);
+    
+        $stats = $taskModel->getTaskStats($userId);
+    
+        $this->view->tasks = $tasks;
+        $this->view->totalTasks = $stats['total'];
+        $this->view->pendingCount = $stats['pending'];
+        $this->view->inProgressCount = $stats['in_progress'];
+        $this->view->completedCount = $stats['completed'];
+    
 
-        $this->view->currentUser=$this->sessionHelper->getCurrentUser();
+        $this->view->currentUser = $this->sessionHelper->getCurrentUser();
     }
 
     public function newAction(): void {
